@@ -30,9 +30,7 @@ curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com
 
 Add task for a user:
 ```bash
-curl -X POST http://127.0.0.1:5000/users/daniel@gmail.com/tasks \
-     -H "Content-Type: application/json" \
-     -d '{"description": "Finish homework", "priority": "medium"}'
+curl -X POST http://127.0.0.1:5000/users/daniel@gmail.com/tasks -H "Content-Type: application/json" -d '{"description": "Finish homework", "priority": "medium"}'
 ```
 
 Retrieve all tasks for a user:
@@ -42,9 +40,7 @@ curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com/tasks
 
 Update a task's description and/or priority (use the correct task ID):
 ```bash
-curl -X PUT http://127.0.0.1:5000/tasks/1 \
-     -H "Content-Type: application/json" \
-     -d '{"description": "Submit homework", "priority": "hard"}'
+curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d '{"description": "Submit homework", "priority": "hard"}'
 ```
 
 Delete task (use the correct task ID):
