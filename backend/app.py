@@ -41,8 +41,18 @@ def get_user(email):
     return jsonify(dict(user))
 
 # if we need to update a users name (will come back to this method)
-# @app.route('/users/<email>', methods=['PUT'])
-# def update_user
+@app.route('/users/<email>', methods=['PUT'])
+def update_user(email):
+    data = request.get_json()
+    name = data.get('name')
+    if not name:
+        abort(400, "name is required to update")
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET name = ? WHERE email = ?", (name, email))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "User name updated succesfully"})
 
 # Delete user
 @app.route('/users/<email>', methods=['DELETE'])
