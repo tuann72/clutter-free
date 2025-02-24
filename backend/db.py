@@ -7,16 +7,16 @@ def get_db():
     conn.row_factory = sqlite3.Row  
     return conn
 
-def init_db():
+def initialize_db():
     conn = get_db()
     cursor = conn.cursor()
     
-    cursor.execute(''' CREATE TABLE IF NOT EXISTS task(
+    cursor.execute(''' CREATE TABLE IF NOT EXISTS users(
         email TEXT PRIMARY KEY,
         name TEXT
     )''')
     
-    cursor.execute(''' CREATE TABLE IF NOT EXISTS users(
+    cursor.execute(''' CREATE TABLE IF NOT EXISTS tasks(
         id INTERGER PRIMARY KEY AUTOINCREMENT,
         user_email TEXT,
         description TEXT,
