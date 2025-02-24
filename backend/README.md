@@ -20,9 +20,7 @@ python app.py
 
 Add new user:
 ```bash
-curl -X POST http://127.0.0.1:5000/users \
-     -H "Content-Type: application/json" \
-     -d '{"email": "daniel@gmail.com", "name": "Daniel Jacob"}'
+curl -X POST http://127.0.0.1:5000/users -H "Content-Type: application/json" -d '{"email": "daniel@gmail.com", "name": "Daniel Jacob"}'
 ```
 
 Retrieve user:
