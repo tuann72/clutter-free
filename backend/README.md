@@ -1,0 +1,22 @@
+To test backend functions, use the the following commands
+
+1. Run Flask application (if flask is not installed, run "pip install flask"
+python app.py
+2. Open new terminal and run Curl commands
+
+3. Add new user
+curl -X POST http://127.0.0.1:5000/users -H "Content-Type: application/json" -d '{"email": "daniel@gmail.com", "name": "Daniel Jacob"}'
+4. Retrieve user
+curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com
+5. Add task for a user
+curl -X POST http://127.0.0.1:5000/users/daniel@gmail.com/tasks -H "Content-Type: application/json" -d '{"description": "Finish homework", "priority": "medium"}'
+6. Retrieve all tasks for a user
+curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com/tasks
+7. Update a task's description and/or priority (use the correct task ID)
+curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d '{"description": "Submit homework", "priority": "hard"}'
+8. Delete task (use the correct task ID)
+curl -X DELETE http ://127.0.0.1:5000/tasks/1
+9. Delete user
+curl -X DELETE http://127.0.0.1:5000/users/daniel@gmail.com
+
+
