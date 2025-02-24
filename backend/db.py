@@ -11,16 +11,16 @@ def initialize_db():
     conn = get_db()
     cursor = conn.cursor()
     
-    cursor.execute(''' CREATE TABLE IF NOT EXISTS users(
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users(
         email TEXT PRIMARY KEY,
         name TEXT
     )''')
     
     cursor.execute(''' CREATE TABLE IF NOT EXISTS tasks(
-        id INTERGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_email TEXT,
         description TEXT,
-        priority TEXT CHECK(priotiy IN ('easy','medium','hard')),
+        priority TEXT CHECK(priority IN ('easy','medium','hard')),
         FOREIGN KEY (user_email) REFERENCES users(email)
     )''')
     

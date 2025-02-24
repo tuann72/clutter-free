@@ -5,12 +5,11 @@ from db import get_db, initialize_db
 app = Flask(__name__)
 
 # we intialize the db here
-@app.before_first_request
-def intialize():
+with app.app_context():
     initialize_db()
     
 # creates a new user and inserts into db
-@app.route('/users', method=['POST'])
+@app.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
     email = data.get('email')
@@ -22,6 +21,7 @@ def create_user():
     try:
         cursor.execute("INSERT INTO users (email, name) VALUES (?, ?)", 
                        (email,name))
+        conn.commit()
     except sqlite3.IntegrityError:
         abort(400, "user already exists")
     finally:
@@ -62,10 +62,10 @@ def remove_user(email):
     cursor.execute("DELETE FROM users WHERE email = ?", (email,))
     conn.commit()
     conn.close()
-    return jsonify({"message: user is deleted successfully"})
+    return jsonify({"message": "user is deleted successfully"})
 
 # create a new task given a certain user
-@app.route('/users/<email>/tasks', method=['POST'])
+@app.route('/users/<email>/tasks', methods=['POST'])
 def create_task(email):
     data = request.get_json()
     description = data.get('description')
@@ -75,15 +75,15 @@ def create_task(email):
         
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO tasks (user_email, description, priority) VALUES (?,?,?)"
-                    (email, description, priority))
+    cursor.execute("INSERT INTO tasks (user_email, description, priority) VALUES (?,?,?)", 
+                   (email, description, priority))
     conn.commit()
     task_id = cursor.lastrowid
     conn.close()
     return jsonify({"message": f"Task number {task_id} successfully created"}), 201
 
 # get all tasks for a given user
-@app.route('/users/<email>/tasks', method=['GET'])
+@app.route('/users/<email>/tasks', methods=['GET'])
 def get_all_tasks(email):
     conn = get_db()
     cursor = conn.cursor()
@@ -94,8 +94,8 @@ def get_all_tasks(email):
     tasks_list = [dict(task) for task in tasks]
     return jsonify(tasks_list)
 
-# the description or priority of a task
-@app.route('/tasks/,int:task_id>', method=['PUT'])
+# update the description or priority of a task
+@app.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     data = request.get_json()
     description = data.get('description')
@@ -107,9 +107,9 @@ def update_task(task_id):
     cursor = conn.cursor()
     
     if description:
-        cursor.execute("UPDATE tasks SET description = ? WHERE id = ?", (description, id))
+        cursor.execute("UPDATE tasks SET description = ? WHERE id = ?", (description, task_id))
     if priority:
-        cursor.execute("UPDATE tasks SET priority = ? WHERE id = ?", (priority, id))
+        cursor.execute("UPDATE tasks SET priority = ? WHERE id = ?", (priority, task_id))
         
     conn.commit()
     conn.close()
@@ -120,7 +120,7 @@ def update_task(task_id):
 def delete_task(task_id):
     conn =get_db()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM tasks WHERE task_id = ?", (task_id,))
+    cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
     conn.commit()
     conn.close()
     return jsonify({"message": "task deleted"})
