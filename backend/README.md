@@ -31,11 +31,14 @@ Follow these steps to test the backend functions using **Flask** and **cURL**.
 If Flask is **not installed**, run:
 ```bash
 pip install flask
+'''
 
 Run Flask application:
+
 ```bash
 python app.py
 '''
+
 
 Add new user
 curl -X POST http://127.0.0.1:5000/users \
