@@ -32,6 +32,7 @@ If Flask is **not installed**, run:
 ```bash
 pip install flask
 
+'''bash
 python app.py
 
 Add new user
