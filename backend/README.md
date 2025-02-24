@@ -27,7 +27,7 @@ Follow these steps to test the backend functions using **Flask** and **cURL**.
 
 ---
 
-## **1️⃣ Run the Flask Application**
+## **Run the Flask Application**
 If Flask is **not installed**, run:
 ```bash
 pip install flask
@@ -35,6 +35,7 @@ pip install flask
 python app.py
 
 Add new user
+```bash
 curl -X POST http://127.0.0.1:5000/users \
      -H "Content-Type: application/json" \
      -d '{"email": "daniel@gmail.com", "name": "Daniel Jacob"}'
