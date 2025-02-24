@@ -20,3 +20,27 @@ curl -X DELETE http ://127.0.0.1:5000/tasks/1
 curl -X DELETE http://127.0.0.1:5000/users/daniel@gmail.com
 
 
+
+# **Backend API Testing Guide**
+
+Follow these steps to test the backend functions using **Flask** and **cURL**.
+
+---
+
+## **1️⃣ Run the Flask Application**
+If Flask is **not installed**, run:
+```bash
+pip install flask
+
+python app.py
+
+curl -X POST http://127.0.0.1:5000/users \
+     -H "Content-Type: application/json" \
+     -d '{"email": "daniel@gmail.com", "name": "Daniel Jacob"}'
+
+curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com
+
+curl -X POST http://127.0.0.1:5000/users/daniel@gmail.com/tasks \
+     -H "Content-Type: application/json" \
+     -d '{"description": "Finish homework", "priority": "medium"}'
+
