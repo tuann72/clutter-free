@@ -40,6 +40,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# database created (created by SQL lite)
+database.db
+
 # C extensions
 *.so
 
