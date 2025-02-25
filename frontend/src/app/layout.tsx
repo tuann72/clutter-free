@@ -12,6 +12,8 @@ import {
 
 import Link from 'next/link'
 
+import { ClerkProvider } from '@clerk/nextjs'
+
 
 const robotoMono = Roboto_Mono({
   variable : "--font-roboto-mono",
@@ -29,7 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ClerkProvider>
+      <html lang="en">
       <body
         className={`${robotoMono.variable} antialiased`}
       >
@@ -80,5 +83,6 @@ export default function RootLayout({
         {children}
       </body>
     </html>
+    </ClerkProvider>
   );
 }

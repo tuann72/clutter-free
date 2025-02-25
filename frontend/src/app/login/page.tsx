@@ -1,4 +1,5 @@
 import React from 'react'
+import { SignIn, useUser } from '@clerk/nextjs'
 
 export default function Login() {
   return (
@@ -6,9 +7,8 @@ export default function Login() {
       <div className="bg-blue-300">
         Column 1
       </div>
-      <div className="bg-green-300 place-self-center">
-        Column 2
-        {/* Place Sign-in Component Here  */}
+      <div className="place-self-center">
+        <SignIn />
       </div>
     </div>
   )
