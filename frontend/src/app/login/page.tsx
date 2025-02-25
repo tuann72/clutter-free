@@ -1,3 +1,4 @@
+import React from 'react'
 import { SignIn, useUser } from '@clerk/nextjs'
 
 export default function Login() {
@@ -10,5 +11,5 @@ export default function Login() {
         <SignIn />
       </div>
     </div>
-  );
+  )
 }
