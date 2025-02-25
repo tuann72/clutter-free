@@ -26,9 +26,6 @@ export default function RootLayout({
       <body
         className={`${robotoMono.variable} antialiased`}
       >
-        <div className="flex justify-end py-2 px-4">
-          
-        </div>
         {children}
       </body>
     </html>
