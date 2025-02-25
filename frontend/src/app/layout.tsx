@@ -65,6 +65,13 @@ export default function RootLayout({
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
+                <Link href="/login" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Login
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
                 Logout
               </NavigationMenuItem>
             </NavigationMenuList>
