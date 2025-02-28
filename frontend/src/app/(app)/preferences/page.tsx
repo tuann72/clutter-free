@@ -4,7 +4,7 @@ import {Moon } from "lucide-react";
 
 export default function Preferences() {
   return (
-    <div className="flex gap-5 min-w-full justify-center items-center">
+    <div className="flex gap-5 w-full max-w-[800px] justify-center items-center overflow-hidden">
       <div className="flex flex-col gap-3">
         {[...Array(8)].map((_, i) => (
           <div

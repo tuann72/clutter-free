@@ -8,9 +8,8 @@ import {
 
 export default function Help(){
     return(
-        <div className="grid grid-rows-[1fr_50px] w-full">
-            <div className="place-self-center">
-                <Accordion type="single" collapsible>
+        <div className="grid grid-rows-[1fr_50px] w-full overflow-hidden">
+                <Accordion className="w-screen max-w-[500px] md:max-w-[700px] place-self-center" type="single" collapsible>
                     <AccordionItem value="item-1">
                         <AccordionTrigger>How can I change task views?</AccordionTrigger>
                             <AccordionContent>
@@ -35,10 +34,6 @@ export default function Help(){
                             </AccordionContent>
                     </AccordionItem>
                 </Accordion>
-            </div>
-            <div className="place-self-end bg-blue-300">
-                Focus View Goes Here
-            </div>
         </div>
     )
 }
