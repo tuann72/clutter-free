@@ -37,15 +37,15 @@ export default function TaskView(){
         >
           <ResizablePanel defaultSize={25}>
             <ResizablePanelGroup direction="vertical">
-                <ResizablePanel defaultSize={50}>
+                <ResizablePanel defaultSize={75}>
                     <div className="flex h-full items-center justify-center p-6">
                     <span className="font-semibold">Graph Section</span>
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle/>
-                <ResizablePanel defaultSize={50}>
+                <ResizablePanel defaultSize={25}>
                     <div className="flex flex-col h-full items-center p-6">
-                    <div className="font-semibold pb-4">Filter Section</div>
+                    <div className="font-semibold pb-4">Style</div>
                       <div className="flex flex-col lg:flex-row gap-2">
                         <GraphViewComboBox value={graph} onValueChange={setGraph} />
                         <TaskViewComboBox value={view} onValueChange={setView} />
@@ -57,7 +57,7 @@ export default function TaskView(){
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={75}>
             <div className="flex flex-col h-full items-center justify-center p-6">
-              <div>
+              <div className="font-semibold">
                 {viewOptions.find((option) => option.value === view)?.label || "Select a view!"}
               </div>
               {
