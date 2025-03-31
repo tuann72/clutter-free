@@ -138,7 +138,7 @@ def rate_tasks():
             return jsonify({"error": "No tasks provided"}), 400
 
         prompt = f"""
-        Analyze, rate, categorize, and estimate the time to complete each of these tasks. Rating should be in terms of difficulities from 1 to 5 with 5 being the hardest. Categorize them into 'Work', 'Health', 'Home', 'Growth', and 'Social'. Estimate the time to complete each task in minutes. 
+        Analyze, rate intensity, categorize, and estimate the time to complete each of these tasks. Intensity should be in terms of difficulities from 1 to 5 with 5 being the hardest. Categorize them into 'Work', 'Health', 'Home', 'Growth', and 'Social'. Estimate the time to complete each task in minutes. The task name should also be returned as "Task." There should also be a default status value with "Not Started" for each task. The response should be a JSON object with a "tasks" array containing objects with the following keys: "task", "category", "intensity", "estimate", and "status". The tasks are: 
         The tasks are:
         Tasks: {json.dumps(tasks)}
         """
@@ -149,7 +149,7 @@ def rate_tasks():
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a task rating assistant. Return a JSON object with a 'tasks' array containing objects with and in the order of 'name', 'category', 'rating', and 'estimate'."
+                    "content": "You are a task rating assistant. Return a JSON object with a 'tasks' array containing objects with and in the order of 'Work', 'Health', 'Home', 'Growth', and 'Social'."
                 },
                 {"role": "user", "content": prompt}
             ],
