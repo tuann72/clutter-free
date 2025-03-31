@@ -20,7 +20,7 @@ python app.py
 
 Add new user:
 ```bash
-curl -X POST http://127.0.0.1:5000/users -H "Content-Type: application/json" -d '{"email": "daniel@gmail.com", "name": "Daniel Jacob"}'
+curl -X POST http://127.0.0.1:5000/users -H "Content-Type: application/json" -d '{"email": "daniel@gmail.com"}'
 ```
 
 Retrieve user:
@@ -30,7 +30,7 @@ curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com
 
 Add task for a user:
 ```bash
-curl -X POST http://127.0.0.1:5000/users/daniel@gmail.com/tasks -H "Content-Type: application/json" -d '{"description": "Finish homework", "priority": "medium"}'
+curl -X POST http://127.0.0.1:5000/users/daniel@gmail.com/tasks -H "Content-Type: application/json" -d '{"task": "Finish homework", "category": "Work", "estimate": 45, "intensity": 3}'
 ```
 
 Retrieve all tasks for a user:
@@ -38,10 +38,14 @@ Retrieve all tasks for a user:
 curl -X GET http://127.0.0.1:5000/users/daniel@gmail.com/tasks
 ```
 
-Update a task's description and/or priority (use the correct task ID):
+Update a task's attributes (single field change) _be sure to use proper task number_:
 ```bash
-curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d '{"description": "Submit homework", "priority": "hard"}'
+curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d '{"status": "in-progress"}'
 ```
+
+Update a task's attributes (multi-field change) _be sure to use proper task number_:
+curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d '{"task": "Submit report", "intensity": 4, "status": "complete"}'
+
 
 Delete task (use the correct task ID):
 ```bash
