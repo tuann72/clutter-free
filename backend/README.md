@@ -44,8 +44,9 @@ curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d
 ```
 
 Update a task's attributes (multi-field change) _be sure to use proper task number_:
+```bash
 curl -X PUT http://127.0.0.1:5000/tasks/1 -H "Content-Type: application/json" -d '{"task": "Submit report", "intensity": 4, "status": "complete"}'
-
+```
 
 Delete task (use the correct task ID):
 ```bash
