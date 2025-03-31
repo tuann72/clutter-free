@@ -7,18 +7,8 @@ import json
 
 # Load environment variables first
 load_dotenv()
-from dotenv import load_dotenv
-from openai import OpenAI  
-import os
-import json
-
-# Load environment variables first
-load_dotenv()
 
 app = Flask(__name__)
-
-# Initialize OpenAI client with API key
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # New client initialization
 
 # Initialize OpenAI client with API key
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # New client initialization
@@ -180,48 +170,5 @@ def rate_tasks():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/process-tasks', methods=['POST'])
-def rate_tasks():
-    try:
-        data = request.get_json()
-        tasks = data.get('tasks', [])
-        
-        if not tasks:
-            return jsonify({"error": "No tasks provided"}), 400
-
-        prompt = f"""
-        Analyze, rate intensity, categorize, and estimate the time to complete each of these tasks. Intensity should be in terms of difficulities from 1 to 5 with 5 being the hardest. Categorize them into 'Work', 'Health', 'Home', 'Growth', and 'Social'. Estimate the time to complete each task in minutes. The task name should also be returned as "Task." There should also be a default status value with "Not-Started" for each task. The response should be a JSON object with a "tasks" array containing objects with the following keys: "task", "category", "intensity", "estimate", and "status". The tasks are: 
-        The tasks are:
-        Tasks: {json.dumps(tasks)}
-        """
-        
-        # Updated API call syntax
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a task rating assistant. Return a JSON object with a 'tasks' array containing objects with and in the order of 'Work', 'Health', 'Home', 'Growth', and 'Social'."
-                },
-                {"role": "user", "content": prompt}
-            ],
-            response_format={"type": "json_object"}
-        )
-
-        # Access response content differently in v1.0+
-        result = json.loads(response.choices[0].message.content)
-        
-        # Validate structure
-        # if not all('task' in item and 'rating' in item for item in result.get('tasks', [])):
-        #     raise ValueError("Invalid response structure")
-
-        return jsonify(result.get('tasks', []))
-
-    except json.JSONDecodeError:
-        return jsonify({"error": "Failed to parse AI response"}), 500
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-if __name__=='__main__':
 if __name__ == '__main__':
     app.run(debug=True)
