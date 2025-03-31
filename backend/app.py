@@ -1,34 +1,33 @@
 from flask import Flask, request, jsonify, abort
-import sqlite3
 from db import get_db, initialize_db
 
 app = Flask(__name__)
 
-# we intialize the db here
+# intialize the db. Important to delete the db if we re-factor it. "rm data database.db"
 with app.app_context():
     initialize_db()
     
-# creates a new user and inserts into db
+# we intialize the db here
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
     email = data.get('email')
-    name = data.get('name','')
     if not email:
-        abort(400, "email is required")
+        abort(400, "Email is required")
+    
     conn = get_db()
     cursor = conn.cursor()
     try:
-        cursor.execute("INSERT INTO users (email, name) VALUES (?, ?)", 
-                       (email,name))
+        cursor.execute("INSERT INTO users (email) VALUES (?)", (email,))
         conn.commit()
-    except sqlite3.IntegrityError:
-        abort(400, "user already exists")
+    except:
+        abort(400, "User already exists")
     finally:
         conn.close()
-    return jsonify({"message":"user created successfully"}), 201
+    
+    return jsonify({"message": "User created successfully"}), 201
 
-# retrieve a user from email_id
+# retrieve a user
 @app.route('/users/<email>', methods=['GET'])
 def get_user(email):
     conn = get_db()
@@ -37,24 +36,10 @@ def get_user(email):
     user = cursor.fetchone()
     conn.close()
     if user is None:
-        abort(404, "user not in database")
+        abort(404, "User not found")
     return jsonify(dict(user))
 
-# if we need to update a users name (will come back to this method)
-@app.route('/users/<email>', methods=['PUT'])
-def update_user(email):
-    data = request.get_json()
-    name = data.get('name')
-    if not name:
-        abort(400, "name is required to update")
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE users SET name = ? WHERE email = ?", (name, email))
-    conn.commit()
-    conn.close()
-    return jsonify({"message": "User name updated succesfully"})
-
-# Delete user
+# deletes a user
 @app.route('/users/<email>', methods=['DELETE'])
 def remove_user(email):
     conn = get_db()
@@ -62,27 +47,34 @@ def remove_user(email):
     cursor.execute("DELETE FROM users WHERE email = ?", (email,))
     conn.commit()
     conn.close()
-    return jsonify({"message": "user is deleted successfully"})
+    return jsonify({"message": "User deleted successfully"})
 
-# create a new task given a certain user
+# creates a task for a user
 @app.route('/users/<email>/tasks', methods=['POST'])
 def create_task(email):
     data = request.get_json()
-    description = data.get('description')
-    priority = data.get('priority')
-    if not description or priority not in ('easy', 'medium', 'hard'):
-        abort(400, "Invalid description or priority. Priority must be easy, medium or hard")
-        
+    task = data.get('task')
+    category = data.get('category')
+    estimate = data.get('estimate')
+    intensity = data.get('intensity')
+    
+    if not task or category not in ('Work', 'Health', 'Home', 'Growth', 'Social') or \
+       not isinstance(estimate, int) or not (1 <= intensity <= 5):
+        abort(400, "Invalid or missing task data")
+
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO tasks (user_email, description, priority) VALUES (?,?,?)", 
-                   (email, description, priority))
+    cursor.execute('''
+        INSERT INTO tasks (user_email, task, category, estimate, intensity)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (email, task, category, estimate, intensity))
     conn.commit()
     task_id = cursor.lastrowid
     conn.close()
+
     return jsonify({"message": f"Task number {task_id} successfully created"}), 201
 
-# get all tasks for a given user
+# gets all the tasks given a user email
 @app.route('/users/<email>/tasks', methods=['GET'])
 def get_all_tasks(email):
     conn = get_db()
@@ -90,44 +82,41 @@ def get_all_tasks(email):
     cursor.execute("SELECT * FROM tasks WHERE user_email = ?", (email,))
     tasks = cursor.fetchall()
     conn.close()
-    # uses list comprehension to create a list of dictionaries fomr the rows in DB
     tasks_list = [dict(task) for task in tasks]
     return jsonify(tasks_list)
 
-# update the description or priority of a task
+# updates a task. 1 or multiple fields can be edited. 
+# Could use PATCH instead of PUT, only a one word change, but they work the same in this implementation
 @app.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     data = request.get_json()
-    description = data.get('description')
-    priority = data.get('priority')
-    if priority and priority not in ('easy', 'medium', 'hard'):
-        abort(400, "invalid priority level")
+    allowed_fields = ['task', 'category', 'estimate', 'intensity', 'status']
+    
+    # Only keep valid fields from the incoming data
+    update_fields = {k: v for k, v in data.items() if k in allowed_fields}
+    if not update_fields:
+        abort(400, "No valid fields to update")
     
     conn = get_db()
     cursor = conn.cursor()
     
-    if description:
-        cursor.execute("UPDATE tasks SET description = ? WHERE id = ?", (description, task_id))
-    if priority:
-        cursor.execute("UPDATE tasks SET priority = ? WHERE id = ?", (priority, task_id))
-        
+    # updates only the values provided for a taks
+    for field, value in update_fields.items():
+        cursor.execute(f"UPDATE tasks SET {field} = ? WHERE id = ?", (value, task_id))
+    
     conn.commit()
     conn.close()
-    return jsonify({"message": "task has been updated"})
+    return jsonify({"message": "Task updated successfully"})
 
-# delete a task
+# deletes a task given the task id
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
-    conn =get_db()
+    conn = get_db()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
     conn.commit()
     conn.close()
-    return jsonify({"message": "task deleted"})
+    return jsonify({"message": "Task deleted successfully"})
 
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
-
-    
-    
-    
