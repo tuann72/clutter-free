@@ -36,47 +36,39 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const data: Payment[] = [
+const data: Task[] = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
+    category: "Work",
+    estimate: 100,
+    intensity: 2,
+    status: "in progress",
+    task: "Create AI Model",
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
+    category: "Health",
+    estimate: 60,
+    intensity: 3,
+    status: "in progress",
+    task: "Go to Hike",
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
+    category: "Growth",
+    estimate: 5,
+    intensity: 1,
+    status: "not started",
+    task: "Meditate",
   },
 ]
 
-export type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
+export type Task = {
+  category: "Work" | "Health" | "Home" | "Growth" | "Social"
+  estimate: number
+  intensity: number
+  status: "not started" | "in progress" | "completed"
+  task: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -107,40 +99,94 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "task",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
+          className="w-full"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Task
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div>{row.getValue("task")}</div>,
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
+    accessorKey: "estimate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Estimate
+          <ArrowUpDown />
+        </Button>
+      )
     },
+    cell: ({ row }) => {
+      const estimate = parseFloat(row.getValue("estimate"))
+      // Function to format estimate
+      interface FormatEstimate {
+        (minutes: number): string;
+      }
+
+      const formatEstimate: FormatEstimate = (minutes) => {
+        if (minutes >= 60) {
+          const hours = (minutes / 60).toFixed(1); // Show 1 decimal place
+          return `${hours} hour${parseFloat(hours) > 1 ? "s" : ""}`;
+        }
+        return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
+      };
+
+      return <div className="text">{formatEstimate(estimate)}</div>;
+    },
+  },
+  {
+    accessorKey: "intensity",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Intensity
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const intensity = parseFloat(row.getValue("intensity"))
+
+      return <div className="text-center">{intensity}</div>
+    },
+  },
+  {
+    accessorKey: "category",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="w-full"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="text-center lowercase">{row.getValue("category")}</div>,
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const Task = row.original
 
       return (
         <DropdownMenu>
@@ -152,14 +198,9 @@ export const columns: ColumnDef<Payment>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>View Task details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -199,10 +240,10 @@ export function ListView() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter tasks..."
+          value={(table.getColumn("task")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("task")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
