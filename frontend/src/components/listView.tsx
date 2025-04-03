@@ -143,7 +143,7 @@ export const columns: ColumnDef<Task>[] = [
         return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
       };
 
-      return <div className="text">{formatEstimate(estimate)}</div>;
+      return <div className="text text-center">{formatEstimate(estimate)}</div>;
     },
   },
   {
