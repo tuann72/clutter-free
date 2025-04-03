@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, abort
 from db import get_db, initialize_db
 from dotenv import load_dotenv
-from openai import OpenAI  
+from openai import OpenAI
+from flask_cors import CORS  
 import os
 import json
 
@@ -9,6 +10,8 @@ import json
 load_dotenv()
 
 app = Flask(__name__)
+
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # Initialize OpenAI client with API key
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # New client initialization
@@ -59,32 +62,31 @@ def remove_user(email):
     conn.close()
     return jsonify({"message": "User deleted successfully"})
 
-# creates a task for a user
 @app.route('/users/<email>/tasks', methods=['POST'])
-def create_task(email):
+def create_tasks(email):
     try:
-        # 1. Get the task from the request body.
+        # 1. Get the list of tasks from the request body.
         data = request.get_json()
-        task_input = data.get('task')
-        if not task_input:
+        tasks_input = data.get('tasks')
+        if not tasks_input:
             return jsonify({"error": "No task provided"}), 400
 
-        # 2. Build the prompt for the OpenAI API.
+        # 2. Prompt for the OpenAI API.
         prompt = f"""
-        Analyze, rate intensity, categorize, and estimate the time to complete the following task.
-        Intensity should be from 1 to 5 (with 5 being the hardest). Categorize it into one of: 'Work', 'Health', 'Home', 'Growth', or 'Social'.
-        Estimate the time to complete the task in minutes. Return the task name as "task" and include a default status "Not-Started".
-        The response should be a JSON object with the following keys: "task", "category", "intensity", "estimate", and "status".
-        Task: {json.dumps(task_input)}
+        Analyze, rate intensity, categorize, and estimate the time to complete each of the following tasks.
+        Intensity should be from 1 to 5 (with 5 being the hardest). Categorize each task into one of: 'Work', 'Health', 'Home', 'Growth', or 'Social'.
+        Estimate the time to complete each task in minutes. Return the task name as "task" and include a default status "Not-Started" for each.
+        The response should be a JSON object with a "tasks" array. Each object in the array should have the following keys: "task", "category", "intensity", "estimate", and "status".
+        Tasks: {json.dumps(tasks_input)}
         """
 
-        # 3. Call the OpenAI API to process the task.
+        # 3. Call the OpenAI API to process the tasks.
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a task rating assistant. Return a JSON object with keys: 'task', 'category', 'intensity', 'estimate', and 'status'."
+                    "content": "You are a task rating assistant. Return a JSON object with a 'tasks' array containing objects with keys: 'task', 'category', 'intensity', 'estimate', and 'status'."
                 },
                 {"role": "user", "content": prompt}
             ],
@@ -93,38 +95,47 @@ def create_task(email):
 
         # 4. Parse the API response.
         result = json.loads(response.choices[0].message.content)
-        processed_task = result
+        processed_tasks = result.get('tasks')
+        if not processed_tasks or not isinstance(processed_tasks, list):
+            return jsonify({"error": "Processed tasks response is missing or invalid"}), 500
 
-        # Validate required keys exist.
+        # Validate each processed task has the required keys.
         required_keys = {"task", "category", "intensity", "estimate", "status"}
-        if not required_keys.issubset(processed_task.keys()):
-            return jsonify({"error": "Processed task response is missing required fields"}), 500
+        for task in processed_tasks:
+            if not required_keys.issubset(task.keys()):
+                return jsonify({"error": "One or more processed tasks are missing required fields"}), 500
 
-        # 5. Insert the processed task into the database.
+        # 5. Insert the processed tasks into the database.
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO tasks (user_email, task, category, estimate, intensity, status)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (
-            email,
-            processed_task.get('task'),
-            processed_task.get('category'),
-            processed_task.get('estimate'),
-            processed_task.get('intensity'),
-            processed_task.get('status')
-        ))
+        inserted_task_ids = []
+        for task in processed_tasks:
+            cursor.execute('''
+                INSERT INTO tasks (user_email, task, category, estimate, intensity, status)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (
+                email,
+                task.get('task'),
+                task.get('category'),
+                task.get('estimate'),
+                task.get('intensity'),
+                task.get('status')
+            ))
+            inserted_task_ids.append(cursor.lastrowid)
         conn.commit()
-        task_id = cursor.lastrowid
         conn.close()
 
-        # 6. Return the processed task.
-        return jsonify({"message": f"Task number {task_id} successfully created"}), 201
+        # 6. Return success message along with inserted task IDs.
+        return jsonify({
+            "message": f"{len(inserted_task_ids)} tasks successfully created",
+            "task_ids": inserted_task_ids
+        }), 201
 
     except json.JSONDecodeError:
         return jsonify({"error": "Failed to parse AI response"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 # gets all the tasks given a user email
 @app.route('/users/<email>/tasks', methods=['GET'])
