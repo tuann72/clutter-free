@@ -9,6 +9,7 @@ import {
 
 import { ListView } from "@/components/listView"
 import { useState } from "react"
+import { PieChartComponent } from "@/components/pie-chart"
 
 const viewOptions = [
   {
@@ -39,7 +40,7 @@ export default function TaskView(){
             <ResizablePanelGroup direction="vertical">
                 <ResizablePanel defaultSize={75}>
                     <div className="flex h-full items-center justify-center p-6">
-                    <span className="font-semibold">Graph Section</span>
+                    <PieChartComponent />
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle/>

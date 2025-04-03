@@ -183,7 +183,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => <div className="text-center lowercase">{row.getValue("category")}</div>,
   },
   {
-    id: "actions",
+    id: "options",
     enableHiding: false,
     cell: ({ row }) => {
       const Task = row.original
@@ -197,10 +197,10 @@ export const columns: ColumnDef<Task>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Options</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View Task details</DropdownMenuItem>
+            <DropdownMenuItem>Edit Task</DropdownMenuItem>
+            <DropdownMenuItem>Change Status</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
