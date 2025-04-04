@@ -1,6 +1,6 @@
 import { SignIn, useUser } from '@clerk/nextjs'
 
-export default function Home() {
+export default function Login() {
   return (
     <div className="grid grid-cols-[1.5fr_1fr] h-screen">
       <div className="flex justify-center items-center bg-slate-200">
@@ -14,7 +14,7 @@ export default function Home() {
         </div>
       </div>
       <div className="place-self-center">
-        {/* <SignIn /> */}
+        <SignIn />
       </div>
     </div>
   );
