@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
 
 export default function NewTask() {
   const [inputText, setInputText] = useState<string>('');
@@ -22,6 +23,7 @@ export default function NewTask() {
 
     const placeholderEmail = 'user@example.com'; // Replace with actual email later
     const endpoint = `http://localhost:5000/users/${encodeURIComponent(placeholderEmail)}/tasks`;
+    const router = useRouter();
 
     try {
       setIsLoading(true);
@@ -41,7 +43,9 @@ export default function NewTask() {
 
       const result = await response.json();
       console.log('Success:', result);
-      // Handle successful response here (e.g., redirect or clear form)
+      // redirect to task view page
+      router.push('/taskview');
+
     } catch (error) {
       console.error('Error:', error);
       setError('Failed to save tasks. Please try again.');
