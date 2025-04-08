@@ -2,12 +2,15 @@
 import { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
 
 export default function NewTask() {
   const [inputText, setInputText] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const router = useRouter();
+  
   // Handle textarea input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
@@ -41,7 +44,9 @@ export default function NewTask() {
 
       const result = await response.json();
       console.log('Success:', result);
-      // Handle successful response here (e.g., redirect or clear form)
+      // redirect to task view page
+      router.push('/taskview');
+
     } catch (error) {
       console.error('Error:', error);
       setError('Failed to save tasks. Please try again.');
