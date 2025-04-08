@@ -9,6 +9,8 @@ export default function NewTask() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const router = useRouter();
+  
   // Handle textarea input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
@@ -23,7 +25,6 @@ export default function NewTask() {
 
     const placeholderEmail = 'user@example.com'; // Replace with actual email later
     const endpoint = `http://localhost:5000/users/${encodeURIComponent(placeholderEmail)}/tasks`;
-    const router = useRouter();
 
     try {
       setIsLoading(true);
