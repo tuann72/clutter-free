@@ -43,7 +43,40 @@ const graphOptions = [
   },
 ]
 
+const data: Task[] = [
+  {
+    category: "Work",
+    estimate: 100,
+    intensity: 2,
+    status: "in progress",
+    task: "Create AI Model",
+  },
+  {
+    category: "Health",
+    estimate: 60,
+    intensity: 3,
+    status: "in progress",
+    task: "Go to Hike",
+  },
+  {
+    category: "Growth",
+    estimate: 5,
+    intensity: 1,
+    status: "not started",
+    task: "Meditate",
+  },
+]
+
+export type Task = {
+  category: "Work" | "Health" | "Home" | "Growth" | "Social"
+  estimate: number
+  intensity: number
+  status: "not started" | "in progress" | "completed"
+  task: string
+}
+
 export default function TaskView(){
+    
 
     const [view, setView] = useState("list_view")
     const [graph, setGraph] = useState("pie_chart")
@@ -84,7 +117,7 @@ export default function TaskView(){
                 {viewOptions.find((option) => option.value === view)?.label || "Select a view!"}
               </div>
               {
-                view === "list_view" && <ListView />
+                view === "list_view" && <ListView data={data} />
               }
             </div>
           </ResizablePanel>

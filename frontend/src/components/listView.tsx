@@ -36,29 +36,29 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const data: Task[] = [
-  {
-    category: "Work",
-    estimate: 100,
-    intensity: 2,
-    status: "in progress",
-    task: "Create AI Model",
-  },
-  {
-    category: "Health",
-    estimate: 60,
-    intensity: 3,
-    status: "in progress",
-    task: "Go to Hike",
-  },
-  {
-    category: "Growth",
-    estimate: 5,
-    intensity: 1,
-    status: "not started",
-    task: "Meditate",
-  },
-]
+// const data: Task[] = [
+//   {
+//     category: "Work",
+//     estimate: 100,
+//     intensity: 2,
+//     status: "in progress",
+//     task: "Create AI Model",
+//   },
+//   {
+//     category: "Health",
+//     estimate: 60,
+//     intensity: 3,
+//     status: "in progress",
+//     task: "Go to Hike",
+//   },
+//   {
+//     category: "Growth",
+//     estimate: 5,
+//     intensity: 1,
+//     status: "not started",
+//     task: "Meditate",
+//   },
+// ]
 
 export type Task = {
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
@@ -208,7 +208,11 @@ export const columns: ColumnDef<Task>[] = [
   },
 ]
 
-export function ListView() {
+interface ListViewProps {
+  data: Task[];
+}
+
+export function ListView({ data }: ListViewProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

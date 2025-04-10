@@ -43,7 +43,7 @@ export function BarChartComponent() {
             cursor={true}
             content={<ChartTooltipContent />}
           />
-          <Bar dataKey="counts" radius={8} />
+          <Bar dataKey="counts" />
         </BarChart>
       </ChartContainer>
     </div>
