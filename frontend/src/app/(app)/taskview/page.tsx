@@ -10,6 +10,8 @@ import {
 import { ListView } from "@/components/listView"
 import { useState } from "react"
 import { PieChartComponent } from "@/components/pie-chart"
+import { BarChartComponent } from "@/components/bar-chart"
+import { RadarChartComponent } from "@/components/radar-chart"
 
 const viewOptions = [
   {
@@ -26,10 +28,25 @@ const viewOptions = [
   },
 ]
 
+const graphOptions = [
+  {
+    value: "pie_chart",
+    label: "Pie Chart"
+  },
+  {
+    value: "bar_chart",
+    label: "Bar Chart"
+  },
+  {
+    value: "radar_chart",
+    label: "Radar Chart"
+  },
+]
+
 export default function TaskView(){
 
     const [view, setView] = useState("list_view")
-    const [graph, setGraph] = useState("bar")
+    const [graph, setGraph] = useState("pie_chart")
 
     return(
         <ResizablePanelGroup
@@ -39,8 +56,13 @@ export default function TaskView(){
           <ResizablePanel defaultSize={25}>
             <ResizablePanelGroup direction="vertical">
                 <ResizablePanel defaultSize={75}>
-                    <div className="flex h-full items-center justify-center p-6">
-                    <PieChartComponent />
+                    <div className="flex flex-col h-full items-center justify-center p-6">
+                      <div className="font-semibold">
+                        {graphOptions.find((option) => option.value === graph)?.label || "Select a graph!"}
+                      </div>
+                      {graph === "pie_chart" && <PieChartComponent/>}
+                      {graph === "bar_chart" && <BarChartComponent/>}
+                      {graph === "radar_chart" && <RadarChartComponent/>}
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle/>
