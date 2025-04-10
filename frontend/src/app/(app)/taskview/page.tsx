@@ -67,6 +67,12 @@ const data: Task[] = [
   },
 ]
 
+const chartData = [
+  { group: "not-started", counts: 10},
+  { group: "in-progress", counts: 5, fill: "hsl(62 0% 32%)" },
+  { group: "completed", counts: 1, fill: "hsl(192 19% 48%)" },
+]
+
 export type Task = {
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
   estimate: number
@@ -93,9 +99,9 @@ export default function TaskView(){
                       <div className="font-semibold">
                         {graphOptions.find((option) => option.value === graph)?.label || "Select a graph!"}
                       </div>
-                      {graph === "pie_chart" && <PieChartComponent/>}
-                      {graph === "bar_chart" && <BarChartComponent/>}
-                      {graph === "radar_chart" && <RadarChartComponent/>}
+                      {graph === "pie_chart" && <PieChartComponent chartData={chartData}/>}
+                      {graph === "bar_chart" && <BarChartComponent chartData={chartData}/>}
+                      {graph === "radar_chart" && <RadarChartComponent chartData={chartData}/>}
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle/>

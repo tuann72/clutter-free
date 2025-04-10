@@ -8,11 +8,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { group: "not-started", counts: 2},
-  { group: "in-progress", counts: 4, fill: "hsl(62 0% 32%)" },
-  { group: "completed", counts: 1, fill: "hsl(192 19% 48%)" },
-]
+
+// const chartData = [
+//   { group: "not-started", counts: 2},
+//   { group: "in-progress", counts: 4, fill: "hsl(62 0% 32%)" },
+//   { group: "completed", counts: 1, fill: "hsl(192 19% 48%)" },
+// ]
 
 const chartConfig = {
   notstarted: {
@@ -27,7 +28,17 @@ const chartConfig = {
 
 } satisfies ChartConfig
 
-export function BarChartComponent() {
+export type ChartDataItem = {
+  group: string;
+  counts: number;
+  fill?: string;
+}
+
+interface ChartDataList{
+  chartData: ChartDataItem[]
+}
+
+export function BarChartComponent({chartData}: ChartDataList) {
   return (
     <div className="text-center min-w-full">
       <ChartContainer config={chartConfig}>

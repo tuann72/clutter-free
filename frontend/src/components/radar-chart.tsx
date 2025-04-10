@@ -6,26 +6,37 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-    { group: "not-started", counts: 2},
-    { group: "in-progress", counts: 4},
-    { group: "completed", counts: 1},
-  ]
-  
-  const chartConfig = {
-    notstarted: {
-      label: "not-started",
-    },
-    inprogress: {
-      label: "in-progress",
-    },
-    completed_: {
-      label: "completed",
-    },
-  
-  } satisfies ChartConfig
 
-export function RadarChartComponent() {
+// const chartData = [
+//     { group: "not-started", counts: 2},
+//     { group: "in-progress", counts: 4},
+//     { group: "completed", counts: 1},
+//   ]
+  
+const chartConfig = {
+  notstarted: {
+    label: "not-started",
+  },
+  inprogress: {
+    label: "in-progress",
+  },
+  completed_: {
+    label: "completed",
+  },
+
+} satisfies ChartConfig
+
+export type ChartDataItem = {
+  group: string;
+  counts: number;
+  fill?: string;
+}
+
+interface ChartDataList{
+  chartData: ChartDataItem[]
+}
+
+export function RadarChartComponent({chartData} : ChartDataList) {
   return (
     <div className="text-center min-w-full">
         <ChartContainer
