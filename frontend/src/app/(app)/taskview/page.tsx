@@ -8,7 +8,7 @@ import {
   } from "@/components/ui/resizable"
 
 import { ListView } from "@/components/listView"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { PieChartComponent } from "@/components/pie-chart"
 import { BarChartComponent } from "@/components/bar-chart"
 import { RadarChartComponent } from "@/components/radar-chart"
@@ -48,7 +48,7 @@ const data: Task[] = [
     category: "Work",
     estimate: 100,
     intensity: 2,
-    status: "in progress",
+    status: "not started",
     task: "Create AI Model",
   },
   {
@@ -62,15 +62,22 @@ const data: Task[] = [
     category: "Growth",
     estimate: 5,
     intensity: 1,
-    status: "not started",
+    status: "completed",
     task: "Meditate",
+  },
+  {
+    category: "Growth",
+    estimate: 5,
+    intensity: 1,
+    status: "completed",
+    task: "Test",
   },
 ]
 
 const chartData = [
-  { group: "not-started", counts: 10},
-  { group: "in-progress", counts: 5, fill: "hsl(62 0% 32%)" },
-  { group: "completed", counts: 1, fill: "hsl(192 19% 48%)" },
+  { group: "not-started", counts: 0},
+  { group: "in-progress", counts: 0, fill: "hsl(62 0% 32%)" },
+  { group: "completed", counts: 0, fill: "hsl(192 19% 48%)" },
 ]
 
 export type Task = {
@@ -82,10 +89,24 @@ export type Task = {
 }
 
 export default function TaskView(){
-    
-
     const [view, setView] = useState("list_view")
     const [graph, setGraph] = useState("pie_chart")
+
+    useEffect(() => {
+      chartData[0].counts = 0
+      chartData[1].counts = 0
+      chartData[2].counts = 0
+
+      data.forEach((task) => {
+        if(task.status == 'not started'){
+          chartData[0].counts++}
+        else if(task.status == 'in progress'){
+          chartData[1].counts++}
+        else if(task.status == 'completed'){
+          chartData[2].counts++}
+      })
+    })
+    
 
     return(
         <ResizablePanelGroup
