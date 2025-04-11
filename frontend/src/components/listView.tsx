@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useState } from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -66,6 +67,10 @@ export type Task = {
   intensity: number
   status: "not started" | "in progress" | "completed"
   task: string
+}
+
+const deleteTask = (task_name : string) => {
+  console.log("Attempting to delete task: " + task_name)
 }
 
 export const columns: ColumnDef<Task>[] = [
@@ -162,7 +167,6 @@ export const columns: ColumnDef<Task>[] = [
     },
     cell: ({ row }) => {
       const intensity = parseFloat(row.getValue("intensity"))
-
       return <div className="text-center">{intensity}</div>
     },
   },
@@ -200,7 +204,7 @@ export const columns: ColumnDef<Task>[] = [
             <DropdownMenuLabel>Options</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Edit Task</DropdownMenuItem>
-            <DropdownMenuItem>Change Status</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => deleteTask(Task.task)}>Delete Task</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -220,6 +224,7 @@ export function ListView({ data }: ListViewProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [singleSelection, setSingleSelection] = useState("")
 
   const table = useReactTable({
     data,
