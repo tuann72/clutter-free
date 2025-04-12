@@ -99,9 +99,6 @@ export default function TaskView(){
     const [graph, setGraph] = useState("pie_chart")
     const userInfo = useUserInfo();
 
-    if (!userInfo?.email) {
-      throw new Error("Could not find user email");
-    }
     const userEmail = userInfo?.email;
 
     useEffect(() => {

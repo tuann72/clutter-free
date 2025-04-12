@@ -39,7 +39,7 @@ export default function Layout({children} : {children: React.ReactNode}){
                     {toggleTopRightOptions === false && (
                         <div>
                             <div className="py-1">
-                                Hi {user ? user.firstName : ""}
+                                Hi {userInfo ? userInfo.firstName : ""}
                             </div>
 
                             {/* add buttons here */}
