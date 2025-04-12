@@ -8,7 +8,13 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-  	extend: {
+	extend: {
+	  fontFamily: {
+		sans: ["'Inter'", "sans-serif"],
+		mono: ["'Roboto Mono'", "monospace"],
+		serif: ["'Georgia'", "serif"],
+		poppins: ["'Poppins'", "sans-serif"],
+		  },		  
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

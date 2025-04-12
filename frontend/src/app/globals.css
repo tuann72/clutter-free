@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Mono&family=Georgia&family=Poppins&display=swap');
+
+
 body {
   font-family: var(--font-roboto-mono);
 }
@@ -96,4 +99,14 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+:root {
+  --font-scale: 1;
+}
+
+body,
+body * {
+  font-size: calc(1rem * var(--font-scale)) !important;
+  transition: font-size 0.2s ease;
 }
