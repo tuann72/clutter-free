@@ -49,9 +49,10 @@ export function AppSidebar() {
   const { signOut } = useClerk();
   const router = useRouter();
 
-  const handleLogout = async () => {
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault();
     await signOut();
-    router.push("/");
+    router.push("/sign-in");
   };
 
   return (
