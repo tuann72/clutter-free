@@ -265,6 +265,15 @@ export function ListView({ data }: ListViewProps) {
     },
   })
 
+  const deleteSelected = () => {
+    const selectedRows = table.getFilteredSelectedRowModel().rows
+    const rowDetails = selectedRows.map((row) => row.original)
+
+    const selectedID = rowDetails.map ((task) => task.id)
+
+    console.log(selectedID)
+  }
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -359,6 +368,14 @@ export function ListView({ data }: ListViewProps) {
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={deleteSelected}
+            disabled={table.getFilteredSelectedRowModel().rows.length == 0}
+          >
+            Delete Selected Items
+          </Button>
           <Button
             variant="outline"
             size="sm"
