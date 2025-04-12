@@ -66,7 +66,7 @@ export type Task = {
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
   estimate: number
   intensity: number
-  status: "not started" | "in progress" | "completed"
+  status: "not-started" | "in-progress" | "completed"
   task: string
 }
 
@@ -100,8 +100,6 @@ export function ListView({ data }: ListViewProps) {
     setCurrIntensity(inten_parem)
     setCurrCategory(catego)
     setCurrStatus(stat)
-
-    console.log(currTaskName)
 
     setDialogOpen(true)
   }

@@ -8,6 +8,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
@@ -23,6 +32,8 @@ type TaskDialogProps = {
 };
 
 export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, stat} : TaskDialogProps) {
+  const oldTaskName = t_name
+
   const [taskName, setTaskName] = useState(t_name);
   const [estimate, setEstimate] = useState(est);
   const [intensity, setIntensity] = useState(intense);
@@ -35,11 +46,17 @@ export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, st
     setIntensity(intense)
     setCategory(categ)
     setStatus(stat)
-  })
+  }, [t_name,est,intense,categ,stat])
 
   const handleUpdates = () => {
+    console.log(taskName)
+    console.log(estimate)
+    console.log(intensity)
+    console.log(category)
+    console.log(status)
 
-    // insert post here
+    // use this to find task
+    console.log(oldTaskName)
 
     setOpen(false)
   }
@@ -69,8 +86,8 @@ export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, st
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Estimate
+            <Label htmlFor="estimate" className="text-right">
+              Estimate (in minutes)
             </Label>
             <Input
               id="estimate"
@@ -80,41 +97,84 @@ export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, st
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
+            <Label htmlFor="intensity" className="text-right">
               Intensity
             </Label>
-            <Input
+            {/* <Input
               id="intensity"
               defaultValue={intensity}
               onChange={(e) => setIntensity(Number(e.target.value))}
               className="col-span-3"
-            />
+            /> */}
+            <Select defaultValue={String(intense)} onValueChange={(value)=> setIntensity(Number(value))}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Intensity"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Status</SelectLabel>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="4">4</SelectItem>
+                  <SelectItem value="5">5</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
+            <Label htmlFor="category" className="text-right">
               Category
             </Label>
-            <Input
+            {/* <Input
               id="category"
               defaultValue={category}
               onChange={(e) => setCategory(e.target.value)}
               className="col-span-3"
-            />
+            /> */}
+            <Select defaultValue={categ} onValueChange={(value)=> setCategory(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Category"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Status</SelectLabel>
+                  <SelectItem value="Work">Work</SelectItem>
+                  <SelectItem value="Health">Health</SelectItem>
+                  <SelectItem value="Home">Home</SelectItem>
+                  <SelectItem value="Growth">Growth</SelectItem>
+                  <SelectItem value="Social">Social</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
+            <Label htmlFor="status" className="text-right">
               Status
             </Label>
-            <Input
+            {/* <Input
               id="status"
               defaultValue={status}
               onChange={(e) => setStatus(e.target.value)}
               className="col-span-3"
-            />
+            /> */}
+            <Select defaultValue={status} onValueChange={(value)=>setStatus(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Status"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Status</SelectLabel>
+                  <SelectItem value="not-started">not-started</SelectItem>
+                  <SelectItem value="in-progress">in-progress</SelectItem>
+                  <SelectItem value="completed">completed</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={() => handleUpdates}>Save changes</Button>
+          <Button type="submit" onClick={handleUpdates}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

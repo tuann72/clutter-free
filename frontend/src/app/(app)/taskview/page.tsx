@@ -48,14 +48,14 @@ const data: Task[] = [
     category: "Work",
     estimate: 100,
     intensity: 2,
-    status: "not started",
+    status: "not-started",
     task: "Create AI Model",
   },
   {
     category: "Health",
     estimate: 60,
     intensity: 3,
-    status: "in progress",
+    status: "in-progress",
     task: "Go to Hike",
   },
   {
@@ -84,7 +84,7 @@ export type Task = {
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
   estimate: number
   intensity: number
-  status: "not started" | "in progress" | "completed"
+  status: "not-started" | "in-progress" | "completed"
   task: string
 }
 
@@ -98,9 +98,9 @@ export default function TaskView(){
       chartData[2].counts = 0
 
       data.forEach((task) => {
-        if(task.status == 'not started'){
+        if(task.status == 'not-started'){
           chartData[0].counts++}
-        else if(task.status == 'in progress'){
+        else if(task.status == 'in-progress'){
           chartData[1].counts++}
         else if(task.status == 'completed'){
           chartData[2].counts++}
