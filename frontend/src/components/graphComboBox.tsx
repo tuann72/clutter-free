@@ -19,16 +19,16 @@ import {
 
 const options = [
   {
-    value: "pie",
+    value: "pie_chart",
     label: "Pie Chart",
   },
   {
-    value: "bar",
-    label: "Bar Plot",
+    value: "bar_chart",
+    label: "Bar Chart",
   },
   {
-    value: "line",
-    label: "Line Plot",
+    value: "radar_chart",
+    label: "Radar Chart",
   },
 ]
 
