@@ -63,16 +63,13 @@ import { TaskDialog } from "./taskDialog"
 // ]
 
 export type Task = {
+  id: number
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
   estimate: number
   intensity: number
   status: "not-started" | "in-progress" | "completed"
   task: string
 }
-
-
-
-
 
 interface ListViewProps {
   data: Task[];
@@ -93,8 +90,10 @@ export function ListView({ data }: ListViewProps) {
   const [currIntensity, setCurrIntensity] = useState(0);
   const [currCategory, setCurrCategory] = useState("");
   const [currStatus, setCurrStatus] = useState("");
+  const [currID, setCurrID] = useState(-1);
 
-  const handleTaskEdit = (name_param : string, esti_param: number, inten_parem: number, catego: string, stat: string) => {
+  const handleTaskEdit = (task_id: number, name_param : string, esti_param: number, inten_parem: number, catego: string, stat: string) => {
+    setCurrID(task_id)
     setCurrTaskName(name_param)
     setCurrEstimate(esti_param)
     setCurrIntensity(inten_parem)
@@ -238,7 +237,7 @@ export function ListView({ data }: ListViewProps) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleTaskEdit(Task.task, Task.estimate, Task.intensity, Task.category, Task.status)}>Edit Task</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleTaskEdit(Task.id, Task.task, Task.estimate, Task.intensity, Task.category, Task.status)}>Edit Task</DropdownMenuItem>
               <DropdownMenuItem onClick={() => deleteTask(Task.task)}>Delete Task</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -379,7 +378,7 @@ export function ListView({ data }: ListViewProps) {
         </div>
       </div>
 
-      <TaskDialog showDialog={dialogOpen} setOpen={setDialogOpen} t_name={currTaskName} est={currEstimate} intense={currIntensity} categ={currCategory} stat={currStatus}/>
+      <TaskDialog t_id={currID} showDialog={dialogOpen} setOpen={setDialogOpen} t_name={currTaskName} est={currEstimate} intense={currIntensity} categ={currCategory} stat={currStatus}/>
 
     </div>
   )

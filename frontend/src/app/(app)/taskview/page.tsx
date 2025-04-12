@@ -45,6 +45,7 @@ const graphOptions = [
 
 const data: Task[] = [
   {
+    id : 1,
     category: "Work",
     estimate: 100,
     intensity: 2,
@@ -52,6 +53,7 @@ const data: Task[] = [
     task: "Create AI Model",
   },
   {
+    id : 2,
     category: "Health",
     estimate: 60,
     intensity: 3,
@@ -59,6 +61,7 @@ const data: Task[] = [
     task: "Go to Hike",
   },
   {
+    id : 3,
     category: "Growth",
     estimate: 5,
     intensity: 1,
@@ -66,6 +69,7 @@ const data: Task[] = [
     task: "Meditate",
   },
   {
+    id : 4,
     category: "Growth",
     estimate: 5,
     intensity: 1,
@@ -81,6 +85,7 @@ const chartData = [
 ]
 
 export type Task = {
+  id: number
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
   estimate: number
   intensity: number

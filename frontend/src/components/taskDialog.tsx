@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 
 type TaskDialogProps = {
+  t_id : number
   t_name : string
   est : number
   intense: number
@@ -31,9 +32,10 @@ type TaskDialogProps = {
   showDialog: boolean;
 };
 
-export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, stat} : TaskDialogProps) {
-  const oldTaskName = t_name
+export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, categ, stat} : TaskDialogProps) {
+  //const oldTaskName = t_name
 
+  const [taskID, setTaskID] = useState(t_id);
   const [taskName, setTaskName] = useState(t_name);
   const [estimate, setEstimate] = useState(est);
   const [intensity, setIntensity] = useState(intense);
@@ -41,14 +43,16 @@ export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, st
   const [status, setStatus] = useState(stat);
 
   useEffect(() => {
+    setTaskID(t_id)
     setTaskName(t_name)
     setEstimate(est)
     setIntensity(intense)
     setCategory(categ)
     setStatus(stat)
-  }, [t_name,est,intense,categ,stat])
+  }, [t_id,t_name,est,intense,categ,stat])
 
   const handleUpdates = () => {
+    console.log(taskID)
     console.log(taskName)
     console.log(estimate)
     console.log(intensity)
@@ -56,7 +60,7 @@ export function TaskDialog({showDialog, setOpen, t_name, est, intense, categ, st
     console.log(status)
 
     // use this to find task
-    console.log(oldTaskName)
+    //console.log(oldTaskName)
 
     setOpen(false)
   }
