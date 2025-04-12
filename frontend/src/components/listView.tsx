@@ -62,6 +62,8 @@ import { TaskDialog } from "./taskDialog"
 //   },
 // ]
 
+
+// Create task json attributes
 export type Task = {
   id: number
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
@@ -71,11 +73,14 @@ export type Task = {
   task: string
 }
 
+// turn it into interface for function to use
 interface ListViewProps {
   data: Task[];
 }
 
+// create list view
 export function ListView({ data }: ListViewProps) {
+  // table functionality
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -83,8 +88,11 @@ export function ListView({ data }: ListViewProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
+
+  // edit task dialog appeareance tracking
   const [dialogOpen, setDialogOpen] = useState(false)
 
+  // stores a specific task's variables
   const [currTaskName, setCurrTaskName] = useState("");
   const [currEstimate, setCurrEstimate] = useState(0);
   const [currIntensity, setCurrIntensity] = useState(0);
@@ -92,7 +100,9 @@ export function ListView({ data }: ListViewProps) {
   const [currStatus, setCurrStatus] = useState("");
   const [currID, setCurrID] = useState(-1);
 
+  // function to handle when user selects edit task
   const handleTaskEdit = (task_id: number, name_param : string, esti_param: number, inten_parem: number, catego: string, stat: string) => {
+    // updates varaibles accordingly
     setCurrID(task_id)
     setCurrTaskName(name_param)
     setCurrEstimate(esti_param)
@@ -100,14 +110,18 @@ export function ListView({ data }: ListViewProps) {
     setCurrCategory(catego)
     setCurrStatus(stat)
 
+    // sets open to true to open dialog box
     setDialogOpen(true)
   }
 
-  const deleteTask = (task_name : string) => {
-    console.log("Attempting to delete task: " + task_name)
+  // deletes single task based on id
+  const deleteTask = (task_id : number) => {
+    console.log("Attempting to delete task id: " + task_id)
   }
 
+  // create columns for task
   const columns: ColumnDef<Task>[] = [
+    // create select option
     {
       id: "select",
       header: ({ table }) => (
@@ -130,6 +144,7 @@ export function ListView({ data }: ListViewProps) {
       enableSorting: false,
       enableHiding: false,
     },
+    // reate status column
     {
       accessorKey: "status",
       header: "Status",
@@ -153,6 +168,7 @@ export function ListView({ data }: ListViewProps) {
       },
       cell: ({ row }) => <div>{row.getValue("task")}</div>,
     },
+    // create estimate column
     {
       accessorKey: "estimate",
       header: ({ column }) => {
@@ -169,11 +185,12 @@ export function ListView({ data }: ListViewProps) {
       },
       cell: ({ row }) => {
         const estimate = parseFloat(row.getValue("estimate"))
-        // Function to format estimate
+        // create interface for time
         interface FormatEstimate {
           (minutes: number): string;
         }
   
+        // creates function to convert time
         const formatEstimate: FormatEstimate = (minutes) => {
           if (minutes >= 60) {
             const hours = (minutes / 60).toFixed(1); // Show 1 decimal place
@@ -185,6 +202,7 @@ export function ListView({ data }: ListViewProps) {
         return <div className="text text-center">{formatEstimate(estimate)}</div>;
       },
     },
+    // creates intensity column
     {
       accessorKey: "intensity",
       header: ({ column }) => {
@@ -204,6 +222,7 @@ export function ListView({ data }: ListViewProps) {
         return <div className="text-center">{intensity}</div>
       },
     },
+    // create category column
     {
       accessorKey: "category",
       header: ({ column }) => {
@@ -220,12 +239,13 @@ export function ListView({ data }: ListViewProps) {
       },
       cell: ({ row }) => <div className="text-center lowercase">{row.getValue("category")}</div>,
     },
+    // create options column
     {
       id: "options",
       enableHiding: false,
       cell: ({ row }) => {
         const Task = row.original
-  
+        // options column has a dropdown menu to edit or delete task
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -238,14 +258,14 @@ export function ListView({ data }: ListViewProps) {
               <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleTaskEdit(Task.id, Task.task, Task.estimate, Task.intensity, Task.category, Task.status)}>Edit Task</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => deleteTask(Task.task)}>Delete Task</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => deleteTask(Task.id)}>Delete Task</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
       },
     },
   ]
-
+// create table with base functionally, documentation can be found in shadcn table component
   const table = useReactTable({
     data,
     columns,
@@ -265,6 +285,7 @@ export function ListView({ data }: ListViewProps) {
     },
   })
 
+  // deletes multiple selected task
   const deleteSelected = () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows
     const rowDetails = selectedRows.map((row) => row.original)
@@ -277,14 +298,16 @@ export function ListView({ data }: ListViewProps) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
+        {/* Input field for search bar */}
         <Input
-          placeholder="Filter tasks..."
+          placeholder="Search Task"
           value={(table.getColumn("task")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("task")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
+        {/* dropdown menu for columns */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -292,6 +315,7 @@ export function ListView({ data }: ListViewProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            {/* applies filters to hide columns */}
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -314,6 +338,7 @@ export function ListView({ data }: ListViewProps) {
       </div>
       <div className="rounded-md border">
         <Table>
+          {/* table header names */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -333,8 +358,10 @@ export function ListView({ data }: ListViewProps) {
             ))}
           </TableHeader>
           <TableBody>
+            {/* row content */}
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
+                // check for selected
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -368,6 +395,7 @@ export function ListView({ data }: ListViewProps) {
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
+          {/* deletes items that are selected */}
           <Button
             variant="outline"
             size="sm"
@@ -376,6 +404,7 @@ export function ListView({ data }: ListViewProps) {
           >
             Delete Selected Items
           </Button>
+            {/* previous page */}
           <Button
             variant="outline"
             size="sm"
@@ -384,6 +413,7 @@ export function ListView({ data }: ListViewProps) {
           >
             Previous
           </Button>
+          {/* next page */}
           <Button
             variant="outline"
             size="sm"
@@ -395,6 +425,7 @@ export function ListView({ data }: ListViewProps) {
         </div>
       </div>
 
+      {/* creates dialog box */}
       <TaskDialog t_id={currID} showDialog={dialogOpen} setOpen={setDialogOpen} t_name={currTaskName} est={currEstimate} intense={currIntensity} categ={currCategory} stat={currStatus}/>
 
     </div>
