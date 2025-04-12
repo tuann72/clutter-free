@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useState } from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -35,187 +36,216 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { TaskDialog } from "./taskDialog"
 
-const data: Task[] = [
-  {
-    category: "Work",
-    estimate: 100,
-    intensity: 2,
-    status: "in progress",
-    task: "Create AI Model",
-  },
-  {
-    category: "Health",
-    estimate: 60,
-    intensity: 3,
-    status: "in progress",
-    task: "Go to Hike",
-  },
-  {
-    category: "Growth",
-    estimate: 5,
-    intensity: 1,
-    status: "not started",
-    task: "Meditate",
-  },
-]
+// const data: Task[] = [
+//   {
+//     category: "Work",
+//     estimate: 100,
+//     intensity: 2,
+//     status: "in progress",
+//     task: "Create AI Model",
+//   },
+//   {
+//     category: "Health",
+//     estimate: 60,
+//     intensity: 3,
+//     status: "in progress",
+//     task: "Go to Hike",
+//   },
+//   {
+//     category: "Growth",
+//     estimate: 5,
+//     intensity: 1,
+//     status: "not started",
+//     task: "Meditate",
+//   },
+// ]
 
 export type Task = {
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
   estimate: number
   intensity: number
-  status: "not started" | "in progress" | "completed"
+  status: "not-started" | "in-progress" | "completed"
   task: string
 }
 
-export const columns: ColumnDef<Task>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "task",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Task
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div>{row.getValue("task")}</div>,
-  },
-  {
-    accessorKey: "estimate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Estimate
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const estimate = parseFloat(row.getValue("estimate"))
-      // Function to format estimate
-      interface FormatEstimate {
-        (minutes: number): string;
-      }
 
-      const formatEstimate: FormatEstimate = (minutes) => {
-        if (minutes >= 60) {
-          const hours = (minutes / 60).toFixed(1); // Show 1 decimal place
-          return `${hours} hour${parseFloat(hours) > 1 ? "s" : ""}`;
-        }
-        return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
-      };
 
-      return <div className="text">{formatEstimate(estimate)}</div>;
-    },
-  },
-  {
-    accessorKey: "intensity",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Intensity
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const intensity = parseFloat(row.getValue("intensity"))
 
-      return <div className="text-center">{intensity}</div>
-    },
-  },
-  {
-    accessorKey: "category",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Category
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="text-center lowercase">{row.getValue("category")}</div>,
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const Task = row.original
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View Task details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
+interface ListViewProps {
+  data: Task[];
+}
 
-export function ListView() {
+export function ListView({ data }: ListViewProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [rowSelection, setRowSelection] = useState({})
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const [currTaskName, setCurrTaskName] = useState("");
+  const [currEstimate, setCurrEstimate] = useState(0);
+  const [currIntensity, setCurrIntensity] = useState(0);
+  const [currCategory, setCurrCategory] = useState("");
+  const [currStatus, setCurrStatus] = useState("");
+
+  const handleTaskEdit = (name_param : string, esti_param: number, inten_parem: number, catego: string, stat: string) => {
+    setCurrTaskName(name_param)
+    setCurrEstimate(esti_param)
+    setCurrIntensity(inten_parem)
+    setCurrCategory(catego)
+    setCurrStatus(stat)
+
+    setDialogOpen(true)
+  }
+
+  const deleteTask = (task_name : string) => {
+    console.log("Attempting to delete task: " + task_name)
+  }
+
+  const columns: ColumnDef<Task>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("status")}</div>
+      ),
+    },
+    {
+      accessorKey: "task",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Task
+            <ArrowUpDown />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div>{row.getValue("task")}</div>,
+    },
+    {
+      accessorKey: "estimate",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Estimate
+            <ArrowUpDown />
+          </Button>
+        )
+      },
+      cell: ({ row }) => {
+        const estimate = parseFloat(row.getValue("estimate"))
+        // Function to format estimate
+        interface FormatEstimate {
+          (minutes: number): string;
+        }
+  
+        const formatEstimate: FormatEstimate = (minutes) => {
+          if (minutes >= 60) {
+            const hours = (minutes / 60).toFixed(1); // Show 1 decimal place
+            return `${hours} hour${parseFloat(hours) > 1 ? "s" : ""}`;
+          }
+          return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
+        };
+  
+        return <div className="text text-center">{formatEstimate(estimate)}</div>;
+      },
+    },
+    {
+      accessorKey: "intensity",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Intensity
+            <ArrowUpDown />
+          </Button>
+        )
+      },
+      cell: ({ row }) => {
+        const intensity = parseFloat(row.getValue("intensity"))
+        return <div className="text-center">{intensity}</div>
+      },
+    },
+    {
+      accessorKey: "category",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Category
+            <ArrowUpDown />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="text-center lowercase">{row.getValue("category")}</div>,
+    },
+    {
+      id: "options",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const Task = row.original
+  
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Options</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => handleTaskEdit(Task.task, Task.estimate, Task.intensity, Task.category, Task.status)}>Edit Task</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => deleteTask(Task.task)}>Delete Task</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+  ]
 
   const table = useReactTable({
     data,
@@ -348,6 +378,9 @@ export function ListView() {
           </Button>
         </div>
       </div>
+
+      <TaskDialog showDialog={dialogOpen} setOpen={setDialogOpen} t_name={currTaskName} est={currEstimate} intense={currIntensity} categ={currCategory} stat={currStatus}/>
+
     </div>
   )
 }
