@@ -8,7 +8,10 @@ import {
   } from "@/components/ui/resizable"
 
 import { ListView } from "@/components/listView"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { PieChartComponent } from "@/components/pie-chart"
+import { BarChartComponent } from "@/components/bar-chart"
+import { RadarChartComponent } from "@/components/radar-chart"
 
 const viewOptions = [
   {
@@ -25,10 +28,90 @@ const viewOptions = [
   },
 ]
 
-export default function TaskView(){
+const graphOptions = [
+  {
+    value: "pie_chart",
+    label: "Pie Chart"
+  },
+  {
+    value: "bar_chart",
+    label: "Bar Chart"
+  },
+  {
+    value: "radar_chart",
+    label: "Radar Chart"
+  },
+]
 
+const data: Task[] = [
+  {
+    id : 1,
+    category: "Work",
+    estimate: 100,
+    intensity: 2,
+    status: "not-started",
+    task: "Create AI Model",
+  },
+  {
+    id : 2,
+    category: "Health",
+    estimate: 60,
+    intensity: 3,
+    status: "in-progress",
+    task: "Go to Hike",
+  },
+  {
+    id : 3,
+    category: "Growth",
+    estimate: 5,
+    intensity: 1,
+    status: "completed",
+    task: "Meditate",
+  },
+  {
+    id : 4,
+    category: "Growth",
+    estimate: 5,
+    intensity: 1,
+    status: "completed",
+    task: "Test",
+  },
+]
+
+const chartData = [
+  { group: "not-started", counts: 0},
+  { group: "in-progress", counts: 0, fill: "hsl(62 0% 32%)" },
+  { group: "completed", counts: 0, fill: "hsl(192 19% 48%)" },
+]
+
+export type Task = {
+  id: number
+  category: "Work" | "Health" | "Home" | "Growth" | "Social"
+  estimate: number
+  intensity: number
+  status: "not-started" | "in-progress" | "completed"
+  task: string
+}
+
+export default function TaskView(){
     const [view, setView] = useState("list_view")
-    const [graph, setGraph] = useState("bar")
+    const [graph, setGraph] = useState("pie_chart")
+
+    useEffect(() => {
+      chartData[0].counts = 0
+      chartData[1].counts = 0
+      chartData[2].counts = 0
+
+      data.forEach((task) => {
+        if(task.status == 'not-started'){
+          chartData[0].counts++}
+        else if(task.status == 'in-progress'){
+          chartData[1].counts++}
+        else if(task.status == 'completed'){
+          chartData[2].counts++}
+      })
+    })
+    
 
     return(
         <ResizablePanelGroup
@@ -38,8 +121,13 @@ export default function TaskView(){
           <ResizablePanel defaultSize={25}>
             <ResizablePanelGroup direction="vertical">
                 <ResizablePanel defaultSize={75}>
-                    <div className="flex h-full items-center justify-center p-6">
-                    <span className="font-semibold">Graph Section</span>
+                    <div className="flex flex-col h-full items-center justify-center p-6">
+                      <div className="font-semibold">
+                        {graphOptions.find((option) => option.value === graph)?.label || "Select a graph!"}
+                      </div>
+                      {graph === "pie_chart" && <PieChartComponent chartData={chartData}/>}
+                      {graph === "bar_chart" && <BarChartComponent chartData={chartData}/>}
+                      {graph === "radar_chart" && <RadarChartComponent chartData={chartData}/>}
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle/>
@@ -61,7 +149,7 @@ export default function TaskView(){
                 {viewOptions.find((option) => option.value === view)?.label || "Select a view!"}
               </div>
               {
-                view === "list_view" && <ListView />
+                view === "list_view" && <ListView data={data} />
               }
             </div>
           </ResizablePanel>
