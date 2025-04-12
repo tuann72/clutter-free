@@ -14,7 +14,6 @@ export default function Home() {
         </div>
       </div>
       <div className="place-self-center">
-        {/* <SignIn /> */}
       </div>
     </div>
   );

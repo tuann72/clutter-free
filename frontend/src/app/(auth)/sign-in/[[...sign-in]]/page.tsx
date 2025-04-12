@@ -8,9 +8,6 @@ export default function Login() {
           <p className='text-5xl'>
           ClutterFree
           </p>
-          <span>
-            LOGIN CURRENTLY NOT WORKING
-          </span>
         </div>
       </div>
       <div className="place-self-center">
