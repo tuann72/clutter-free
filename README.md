@@ -22,11 +22,17 @@ All technologies' links can be found at the bottom of this section.
 - Designed to be a component building block
 - Can be modified significantly to suit developer needs
 
+## Clerk
+- Third-party user authentication service
+- Handles user account and session management
+- Provides variety of authentication options such as username, email, social accounts, etc.
+
 ## Technology Links
 - NPM - https://www.npmjs.com/
 - Node - https://nodejs.org/en
 - Nextjs - https://nextjs.org/
 - Shadcn - https://ui.shadcn.com/
+- Clerk - https://clerk.com/
 
 # Development Setup
 
