@@ -117,6 +117,21 @@ export function ListView({ data }: ListViewProps) {
   // deletes single task based on id
   const deleteTask = (task_id : number) => {
     console.log("Attempting to delete task id: " + task_id)
+    fetch("http://localhost:5000/tasks/" + task_id, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Task deleted successfully")
+          // refresh the page to see changes
+          window.location.reload()
+        } else {
+          console.error("Failed to delete task")
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting task:", error)
+      })
   }
 
   // create columns for task
@@ -293,6 +308,24 @@ export function ListView({ data }: ListViewProps) {
     const selectedID = rowDetails.map ((task) => task.id)
 
     console.log(selectedID)
+
+    selectedID.forEach((task_id) => {
+      fetch("http://localhost:5000/tasks/" + task_id, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Task deleted successfully")
+          } else {
+            console.error("Failed to delete task")
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting task:", error)
+        })
+    });
+    // refresh the page to see changes
+    window.location.reload()
   }
 
   return (
