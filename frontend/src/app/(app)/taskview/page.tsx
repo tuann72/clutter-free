@@ -45,38 +45,6 @@ const graphOptions = [
 ]
 
 const data: Task[] = [
-  {
-    id : 1,
-    category: "Work",
-    estimate: 100,
-    intensity: 2,
-    status: "not-started",
-    task: "Create AI Model",
-  },
-  {
-    id : 2,
-    category: "Health",
-    estimate: 60,
-    intensity: 3,
-    status: "in-progress",
-    task: "Go to Hike",
-  },
-  {
-    id : 3,
-    category: "Growth",
-    estimate: 5,
-    intensity: 1,
-    status: "completed",
-    task: "Meditate",
-  },
-  {
-    id : 4,
-    category: "Growth",
-    estimate: 5,
-    intensity: 1,
-    status: "completed",
-    task: "Test",
-  },
 ]
 
 const chartData = [
@@ -97,9 +65,17 @@ export type Task = {
 export default function TaskView(){
     const [view, setView] = useState("list_view")
     const [graph, setGraph] = useState("pie_chart")
+    const [data, setData] = useState<Task[]>([])
     const userInfo = useUserInfo();
 
     const userEmail = userInfo?.email;
+
+    useEffect(() => {
+      fetch("http://localhost:5000/users/" + userEmail + "/tasks")
+        .then((res) => res.json())
+        .then((data) => setData(data))
+        .catch((err) => console.error("Failed to fetch tasks:", err))
+    }, [])
 
     useEffect(() => {
       chartData[0].counts = 0
