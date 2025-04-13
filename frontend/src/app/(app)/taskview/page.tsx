@@ -82,7 +82,7 @@ export default function TaskView(){
     
           // Update chart with fetched task data
           data.forEach((task: Task) => {
-            if (task.status === 'Not-Started') chartData[0].counts++;
+            if (task.status === 'not-started') chartData[0].counts++;
             else if (task.status === 'in-progress') chartData[1].counts++;
             else if (task.status === 'completed') chartData[2].counts++;
           });
