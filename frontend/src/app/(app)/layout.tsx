@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeClosed } from "lucide-react";
+import { useUserInfo } from '@/context/UserContext';
 
 export default function Layout({children} : {children: React.ReactNode}){
 
@@ -12,6 +13,8 @@ export default function Layout({children} : {children: React.ReactNode}){
     const toggleVisibility = () => {
         setToggleTopRightOptions((state) => !state)
     }
+
+    const userInfo = useUserInfo();
 
     return(
         <SidebarProvider>
@@ -25,7 +28,7 @@ export default function Layout({children} : {children: React.ReactNode}){
                 {toggleTopRightOptions === false && (
                     <div>
                         <div className="py-1">
-                            Hi User!
+                            Hi {userInfo ? userInfo.firstName : "Guest User"}
                         </div>
 
                         {/* add buttons here */}

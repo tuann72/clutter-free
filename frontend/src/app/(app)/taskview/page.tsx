@@ -12,6 +12,7 @@ import { useState, useEffect } from "react"
 import { PieChartComponent } from "@/components/pie-chart"
 import { BarChartComponent } from "@/components/bar-chart"
 import { RadarChartComponent } from "@/components/radar-chart"
+import { useUserInfo } from '@/context/UserContext';
 
 const viewOptions = [
   {
@@ -96,6 +97,9 @@ export type Task = {
 export default function TaskView(){
     const [view, setView] = useState("list_view")
     const [graph, setGraph] = useState("pie_chart")
+    const userInfo = useUserInfo();
+
+    const userEmail = userInfo?.email;
 
     useEffect(() => {
       chartData[0].counts = 0

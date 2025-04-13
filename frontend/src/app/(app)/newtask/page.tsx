@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
+import { useUserInfo } from '@/context/UserContext';
 
 export default function NewTask() {
   const [inputText, setInputText] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const userInfo = useUserInfo();
 
   const router = useRouter();
   
@@ -23,8 +25,11 @@ export default function NewTask() {
       return;
     }
 
-    const placeholderEmail = 'user@example.com'; // Replace with actual email later
-    const endpoint = `http://localhost:5000/users/${encodeURIComponent(placeholderEmail)}/tasks`;
+    if (!userInfo?.email) {
+      throw new Error("Could not find user email");
+    }
+    const userEmail = userInfo?.email;
+    const endpoint = `http://localhost:5000/users/${encodeURIComponent(userEmail)}/tasks`;
 
     try {
       setIsLoading(true);

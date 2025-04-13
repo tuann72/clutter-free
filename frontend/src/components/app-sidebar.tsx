@@ -1,4 +1,8 @@
-import { Inbox, ListTodo , Info, Settings2, LogOut } from "lucide-react"
+'use client';
+
+import { Inbox, ListTodo, Info, Settings2, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 
 import {
   Sidebar,
@@ -9,9 +13,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-// Menu items.
+// Menu items
 const items = [
   {
     title: "New Task",
@@ -35,12 +39,22 @@ const items = [
   },
   {
     title: "Logout",
-    url: "/",
+    url: "/sign-in",
     icon: LogOut,
+    isLogout: true,
   },
-]
+];
 
 export function AppSidebar() {
+  const { signOut } = useClerk();
+  const router = useRouter();
+
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await signOut();
+    router.push("/sign-in");
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -50,11 +64,21 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
+                  <SidebarMenuButton
+                    asChild
+                    onClick={item.isLogout ? handleLogout : undefined}
+                  >
+                    {item.isLogout ? (
+                        <a href={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </a>
+                    ) : (
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -63,5 +87,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
