@@ -73,24 +73,22 @@ export default function TaskView(){
     useEffect(() => {
       fetch("http://localhost:5000/users/" + userEmail + "/tasks")
         .then((res) => res.json())
-        .then((data) => setData(data))
-        .catch((err) => console.error("Failed to fetch tasks:", err))
-    }, [])
+        .then((data) => {
+          setData(data);
 
-    useEffect(() => {
-      chartData[0].counts = 0
-      chartData[1].counts = 0
-      chartData[2].counts = 0
-
-      data.forEach((task) => {
-        if(task.status == 'not-started'){
-          chartData[0].counts++}
-        else if(task.status == 'in-progress'){
-          chartData[1].counts++}
-        else if(task.status == 'completed'){
-          chartData[2].counts++}
-      })
-    })
+          chartData[0].counts = 0;
+          chartData[1].counts = 0;
+          chartData[2].counts = 0;
+    
+          // Update chart with fetched task data
+          data.forEach((task: Task) => {
+            if (task.status === 'Not-Started') chartData[0].counts++;
+            else if (task.status === 'in-progress') chartData[1].counts++;
+            else if (task.status === 'completed') chartData[2].counts++;
+          });
+        })
+        .catch((err) => console.error("Failed to fetch tasks:", err));
+    }, []);
     
 
     return(
