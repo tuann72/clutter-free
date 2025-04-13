@@ -82,9 +82,9 @@ export default function TaskView(){
     
           // Update chart with fetched task data
           data.forEach((task: Task) => {
-            if (task.status === 'not-started') chartData[0].counts++;
-            else if (task.status === 'in-progress') chartData[1].counts++;
-            else if (task.status === 'completed') chartData[2].counts++;
+            if (task.status.toLowerCase() === 'not-started') chartData[0].counts++;
+            else if (task.status.toLowerCase() === 'in-progress') chartData[1].counts++;
+            else if (task.status.toLowerCase() === 'completed') chartData[2].counts++;
           });
         })
         .catch((err) => console.error("Failed to fetch tasks:", err));
