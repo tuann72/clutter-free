@@ -56,7 +56,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
   }, [t_id,t_name,est,intense,categ,stat])
 
   // function to handle task edits
-  const handleUpdates = () => {
+  const handleUpdates = async () => {
     console.log(taskID)
     console.log(taskName)
     console.log(estimate)
@@ -68,6 +68,37 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
     //console.log(oldTaskName)
 
     setOpen(false)
+
+    try {
+      const newUpdates = {
+        task: taskName,
+        estimate: estimate,
+        intensity: intensity,
+        category: category,
+        status: status,
+      };
+      
+      // Update the specific task with new values
+      const response = await fetch(`http://localhost:5000/tasks/${taskID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUpdates),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+  
+      const result = await response.json();
+      console.log(result.message); // Task updated successfully!
+
+      // refresh the page to see the changes
+      window.location.reload();
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
   }
 
   return (

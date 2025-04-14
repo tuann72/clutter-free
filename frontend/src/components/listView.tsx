@@ -112,33 +112,6 @@ export function ListView({ data }: ListViewProps) {
 
     // sets open to true to open dialog box
     setDialogOpen(true)
-
-    try {
-      const newUpdates = {
-        task: name_param,
-        estimate: esti_param,
-        intensity: inten_parem,
-        category: catego,
-        status: stat,
-      };
-  
-      const response = await fetch(`http://localhost:5000/tasks/${task_id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newUpdates),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
-  
-      const result = await response.json();
-      console.log(result.message); // Task updated successfully!
-    } catch (error) {
-      console.error("Update failed:", error);
-    }
   }
 
   // deletes single task based on id
