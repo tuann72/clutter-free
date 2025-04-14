@@ -48,7 +48,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
     setEstimate(est)
     setIntensity(intense)
     setCategory(categ)
-    setStatus(stat)
+    setStatus(stat.toLowerCase())
   }, [t_id,t_name,est,intense,categ,stat])
 
   const handleUpdates = () => {
