@@ -171,7 +171,7 @@ export function ListView({ data }: ListViewProps) {
             className="w-full"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Task
+            Status
             <ArrowUpDown />
           </Button>
         )
