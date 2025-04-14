@@ -164,7 +164,18 @@ export function ListView({ data }: ListViewProps) {
     // reate status column
     {
       accessorKey: "status",
-      header: "Status",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Task
+            <ArrowUpDown />
+          </Button>
+        )
+      },
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("status")}</div>
       ),

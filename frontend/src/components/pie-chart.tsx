@@ -7,6 +7,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart"
 
 // const chartData = [
@@ -52,7 +54,7 @@ export function PieChartComponent({chartData} : ChartDataList) {
           <PieChart>
             {/* pie chart uses counts as the values */}
             <ChartTooltip
-              content={<ChartTooltipContent nameKey="counts" hideLabel />}
+              content={<ChartTooltipContent nameKey="counts" />}
             />
             {/* create pie chart based on chart data */}
             <Pie
@@ -79,6 +81,7 @@ export function PieChartComponent({chartData} : ChartDataList) {
               nameKey="group"
             />
           </PieChart>
+          
         </ChartContainer>
     </div>
   )

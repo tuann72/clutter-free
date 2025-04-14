@@ -8,6 +8,7 @@ export default function Login() {
           <p className='text-5xl'>
           ClutterFree
           </p>
+          A distraction free productivity tool.
         </div>
       </div>
       <div className="place-self-center">
