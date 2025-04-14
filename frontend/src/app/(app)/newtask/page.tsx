@@ -19,6 +19,7 @@ export default function NewTask() {
     setError(null);
   };
 
+  // Handle submission of new task(s)
   const handleSubmit = async () => {
     if (!inputText.trim()) {
       setError('Please enter at least one task');
@@ -28,10 +29,12 @@ export default function NewTask() {
     if (!userInfo?.email) {
       throw new Error("Could not find user email");
     }
+    // Gets user's email and creates API endpoint
     const userEmail = userInfo?.email;
     const endpoint = `http://localhost:5000/users/${encodeURIComponent(userEmail)}/tasks`;
 
     try {
+      // Send tasks to backend for data persistence and NLP
       setIsLoading(true);
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -47,8 +50,9 @@ export default function NewTask() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      // Get backend response in JSON
       const result = await response.json();
-      console.log('Success:', result);
+      //console.log('Success:', result);
       // redirect to task view page
       router.push('/taskview');
 

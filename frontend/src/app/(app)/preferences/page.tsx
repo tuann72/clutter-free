@@ -6,6 +6,7 @@ export default function Preferences() {
   return (
     <div className="w-screen flex justify-center items-center overflow-hidden">
       <div className="flex flex-col gap-3">
+        {/* List of accessibility feature toggles for user preferences */}
         {[...Array(8)].map((_, i) => (
           <div
             key={i}
@@ -16,6 +17,7 @@ export default function Preferences() {
           </div>
         ))}
       </div>
+      {/* Mini window showing effects of preferences */}
       <div className="w-[400px] h-[500px] bg-gray-300 rounded-lg flex items-center justify-center text-lg text-black-700 ml-16">
         Feature Preview
       </div>

@@ -11,6 +11,7 @@ export default function Login() {
         </div>
       </div>
       <div className="place-self-center">
+        {/* Sign in component from Clerk for users to sign in */}
         <SignIn />
       </div>
     </div>

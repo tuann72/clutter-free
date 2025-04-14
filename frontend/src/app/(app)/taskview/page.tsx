@@ -14,6 +14,7 @@ import { BarChartComponent } from "@/components/bar-chart"
 import { RadarChartComponent } from "@/components/radar-chart"
 import { useUserInfo } from '@/context/UserContext';
 
+// Array of different views for tasks
 const viewOptions = [
   {
     value: "list_view",
@@ -29,6 +30,7 @@ const viewOptions = [
   },
 ]
 
+// Array of task progress visualizations
 const graphOptions = [
   {
     value: "pie_chart",
@@ -53,6 +55,7 @@ const chartData = [
   { group: "completed", counts: 0, fill: "hsl(192 19% 48%)" },
 ]
 
+// Task object type for formatting and structuring data for tasks
 export type Task = {
   id: number
   category: "Work" | "Health" | "Home" | "Growth" | "Social"
@@ -70,6 +73,7 @@ export default function TaskView(){
 
     const userEmail = userInfo?.email;
 
+    // Fetches user's tasks from backend upon render
     useEffect(() => {
       fetch("http://localhost:5000/users/" + userEmail + "/tasks")
         .then((res) => res.json())
@@ -101,6 +105,7 @@ export default function TaskView(){
                 <ResizablePanel defaultSize={75}>
                     <div className="flex flex-col h-full items-center justify-center p-6">
                       <div className="font-semibold">
+                        {/* Conditionally render chart of user's choosing for task progress visualization */}
                         {graphOptions.find((option) => option.value === graph)?.label || "Select a graph!"}
                       </div>
                       {graph === "pie_chart" && <PieChartComponent chartData={chartData}/>}
@@ -110,6 +115,7 @@ export default function TaskView(){
                 </ResizablePanel>
                 <ResizableHandle withHandle/>
                 <ResizablePanel defaultSize={25}>
+                  {/* Allow users to select different charts and task views */}
                     <div className="flex flex-col h-full items-center p-6">
                     <div className="font-semibold pb-4">Style</div>
                       <div className="flex flex-col lg:flex-row gap-2">
@@ -124,6 +130,7 @@ export default function TaskView(){
           <ResizablePanel defaultSize={75}>
             <div className="flex flex-col h-full items-center justify-center p-6">
               <div className="font-semibold">
+                {/* Conditionally render task view of user's choosing */}
                 {viewOptions.find((option) => option.value === view)?.label || "Select a view!"}
               </div>
               {

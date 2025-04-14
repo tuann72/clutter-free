@@ -9,6 +9,7 @@ import {
 export default function Help(){
     return(
         <div className="grid grid-rows-[1fr_50px] w-full overflow-hidden">
+                {/* Help accordion with FAQs and answers upon pulldown */}
                 <Accordion className="w-screen max-w-[500px] md:max-w-[700px] place-self-center" type="single" collapsible>
                     <AccordionItem value="item-1">
                         <AccordionTrigger>How can I change task views?</AccordionTrigger>
