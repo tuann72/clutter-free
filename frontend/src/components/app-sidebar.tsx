@@ -46,12 +46,16 @@ const items = [
 ];
 
 export function AppSidebar() {
+  // signs user our
   const { signOut } = useClerk();
   const router = useRouter();
 
+  // handles logout
   const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
+    // waits for signout to finish
     await signOut();
+    // change page to sign in
     router.push("/sign-in");
   };
 
@@ -59,10 +63,14 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
+          {/* sidebar top label */}
           <SidebarGroupLabel>ClutterFree</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {/* loop through the list of items
+              smarter way of adding multiple items */}
               {items.map((item) => (
+                // for each item create a tab navigation for it
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild

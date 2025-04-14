@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+// possible options for task views
 const options = [
   {
     value: "list_view",
@@ -39,17 +40,21 @@ export function TaskViewComboBox({
   value: string
   onValueChange: (value: string) => void
 }) {
+  // stores open and close status of combobox
   const [open, setOpen] = React.useState(false)
 
   return (
+    // open if the status is true
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
+        {/* intitial button to open combobox */}
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-[150px] justify-between"
         >
+          {/* default value */}
           {value
             ? options.find((option) => option.value === value)?.label
             : "Select Style"}
@@ -60,6 +65,7 @@ export function TaskViewComboBox({
         <Command>
           <CommandList>
             <CommandGroup>
+              {/* for each item in option we create a selectable label */}
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
@@ -70,6 +76,7 @@ export function TaskViewComboBox({
                   }}
                 >
                   {option.label}
+                  {/* if option is checked changed its appearance */}
                   <Check
                     className={cn(
                       "ml-auto",

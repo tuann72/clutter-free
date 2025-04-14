@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+// options for the combobox
 const options = [
   {
     value: "pie_chart",
@@ -39,17 +40,21 @@ export function GraphViewComboBox({
   value: string
   onValueChange: (value: string) => void
 }) {
+  // stores the state of the box, whether its open or closed
   const [open, setOpen] = React.useState(false)
 
   return (
+    // open if the status is true
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
+        {/* intitial button to open combobox */}
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-[150px] justify-between"
         >
+          {/* default value */}
           {value
             ? options.find((option) => option.value === value)?.label
             : "Select Style"}
@@ -60,6 +65,7 @@ export function GraphViewComboBox({
         <Command>
           <CommandList>
             <CommandGroup>
+              {/* for each item in option we create a selectable label */}
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
@@ -70,6 +76,7 @@ export function GraphViewComboBox({
                   }}
                 >
                   {option.label}
+                  {/* if option is checked changed its appearance */}
                   <Check
                     className={cn(
                       "ml-auto",

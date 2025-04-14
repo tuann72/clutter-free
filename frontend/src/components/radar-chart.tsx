@@ -12,7 +12,8 @@ import {
 //     { group: "in-progress", counts: 4},
 //     { group: "completed", counts: 1},
 //   ]
-  
+
+// chart configuration
 const chartConfig = {
   notstarted: {
     label: "not-started",
@@ -26,12 +27,13 @@ const chartConfig = {
 
 } satisfies ChartConfig
 
+// chart item attributes
 export type ChartDataItem = {
   group: string;
   counts: number;
   fill?: string;
 }
-
+// typing interface
 interface ChartDataList{
   chartData: ChartDataItem[]
 }
@@ -43,10 +45,12 @@ export function RadarChartComponent({chartData} : ChartDataList) {
             config={chartConfig}
             className="mx-auto max-h-[250px]"
         >
+          {/* create radar chart */}
             <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <PolarAngleAxis dataKey="group" />
             <PolarGrid />
+            {/* use counts as values */}
             <Radar
                 dataKey="counts"
                 fill="hsl(192 19% 48%)"

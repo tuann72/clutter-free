@@ -15,6 +15,8 @@ import {
 //   { group: "completed", counts: 1, fill: "hsl(192 19% 48%)" },
 // ]
 
+
+// chart configuration
 const chartConfig = {
   notstarted: {
     label: "not-started",
@@ -28,12 +30,14 @@ const chartConfig = {
 
 } satisfies ChartConfig
 
+// all chart items have these attributes
 export type ChartDataItem = {
   group: string;
   counts: number;
   fill?: string;
 }
 
+// convert into interface to pass to function
 interface ChartDataList{
   chartData: ChartDataItem[]
 }
@@ -41,9 +45,11 @@ interface ChartDataList{
 export function BarChartComponent({chartData}: ChartDataList) {
   return (
     <div className="text-center min-w-full">
+      {/* create chart using the chart config format */}
       <ChartContainer config={chartConfig}>
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />
+          {/* x-axis configuration */}
           <XAxis
             dataKey="group"
             tickLine={false}
@@ -51,9 +57,11 @@ export function BarChartComponent({chartData}: ChartDataList) {
             axisLine={true}
           />
           <ChartTooltip
+          // add on hover tool tip
             cursor={true}
             content={<ChartTooltipContent />}
           />
+          {/* y-value is counts */}
           <Bar dataKey="counts" />
         </BarChart>
       </ChartContainer>
