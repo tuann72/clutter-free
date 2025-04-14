@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 
+// creates attributes for task dialogs
 type TaskDialogProps = {
   t_id : number
   t_name : string
@@ -28,6 +29,7 @@ type TaskDialogProps = {
   intense: number
   categ: string
   stat: string
+  // we'll need to pass a function as well to set the open/close status of the dialog box
   setOpen: (open: boolean) => void
   showDialog: boolean;
 };
@@ -35,6 +37,7 @@ type TaskDialogProps = {
 export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, categ, stat} : TaskDialogProps) {
   //const oldTaskName = t_name
 
+  // variables to stores all parameters passed
   const [taskID, setTaskID] = useState(t_id);
   const [taskName, setTaskName] = useState(t_name);
   const [estimate, setEstimate] = useState(est);
@@ -42,6 +45,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
   const [category, setCategory] = useState(categ);
   const [status, setStatus] = useState(stat);
 
+  // when t_id,t_name,est,intense,categ,stat is changed, useEffect updates those values
   useEffect(() => {
     setTaskID(t_id)
     setTaskName(t_name)
@@ -51,6 +55,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
     setStatus(stat.toLowerCase())
   }, [t_id,t_name,est,intense,categ,stat])
 
+  // function to handle task edits
   const handleUpdates = () => {
     console.log(taskID)
     console.log(taskName)
@@ -66,40 +71,49 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
   }
 
   return (
+    // open dialog if showDIalog is true
     <Dialog open={showDialog}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
+          {/* title */}
           <DialogTitle>Edit Task</DialogTitle>
+          {/* description */}
           <DialogDescription>
             Make changes to your task. Click save changes when you are done.
           </DialogDescription>
+          {/* add X to the top right to close the dialog */}
           <div onClick={() => setOpen(false)} className="absolute right-4 top-4 rounded-sm cursor-pointer">
             <X className="h-4 w-4" />
           </div>
         </DialogHeader>
         <div className="grid gap-4 py-4">
+          {/* task name field */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Task Name
             </Label>
             <Input
               id="taskName"
+              // default value is whatever the user had intitially
               defaultValue={taskName}
               onChange={(e) => setTaskName(e.target.value)}
               className="col-span-3"
             />
           </div>
+          {/* estimate time field */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="estimate" className="text-right">
               Estimate (in minutes)
             </Label>
             <Input
               id="estimate"
+              // default value is whatever the user had intitially 
               defaultValue={estimate}
               onChange={(e) => setEstimate(Number(e.target.value))}
               className="col-span-3"
             />
           </div>
+          {/* intensity field */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="intensity" className="text-right">
               Intensity
@@ -110,6 +124,8 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               onChange={(e) => setIntensity(Number(e.target.value))}
               className="col-span-3"
             /> */}
+            {/* default value is whatever the user had intitially  */}
+            {/* in this case we use a select component to limit user options */}
             <Select defaultValue={String(intense)} onValueChange={(value)=> setIntensity(Number(value))}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select Intensity"/>
@@ -126,6 +142,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               </SelectContent>
             </Select>
           </div>
+          {/* category field */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="category" className="text-right">
               Category
@@ -136,6 +153,8 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               onChange={(e) => setCategory(e.target.value)}
               className="col-span-3"
             /> */}
+            {/* default value is whatever the user had intitially  */}
+            {/* in this case we use a select component to limit user options */}
             <Select defaultValue={categ} onValueChange={(value)=> setCategory(value)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select Category"/>
@@ -152,6 +171,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               </SelectContent>
             </Select>
           </div>
+          {/* status field */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="status" className="text-right">
               Status
@@ -162,6 +182,8 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               onChange={(e) => setStatus(e.target.value)}
               className="col-span-3"
             /> */}
+            {/* default value is whatever the user had intitially  */}
+            {/* in this case we use a select component to limit user options */}
             <Select defaultValue={status} onValueChange={(value)=>setStatus(value)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select Status"/>
@@ -177,6 +199,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
             </Select>
           </div>
         </div>
+        {/* save changes button at the footer */}
         <DialogFooter>
           <Button type="submit" onClick={handleUpdates}>Save changes</Button>
         </DialogFooter>
