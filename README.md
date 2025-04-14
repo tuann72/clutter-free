@@ -27,12 +27,18 @@ All technologies' links can be found at the bottom of this section.
 - Handles user account and session management
 - Provides variety of authentication options such as username, email, social accounts, etc.
 
+## Openai API
+- Third-party service that provides AI Models
+- Handels natural language processing
+- This API handles queries for the GPT-4o model to process Tasks
+
 ## Technology Links
 - NPM - https://www.npmjs.com/
 - Node - https://nodejs.org/en
 - Nextjs - https://nextjs.org/
 - Shadcn - https://ui.shadcn.com/
 - Clerk - https://clerk.com/
+- OpenAI API - https://platform.openai.com/
 
 # Development Setup
 
