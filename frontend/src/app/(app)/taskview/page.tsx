@@ -24,10 +24,6 @@ const viewOptions = [
     value: "kanban",
     label: "Kanban",
   },
-  {
-    value: "mindmap",
-    label: "Mindmap",
-  },
 ]
 
 // Array of task progress visualizations
