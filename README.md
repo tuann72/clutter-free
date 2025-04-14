@@ -48,26 +48,41 @@ For convience we have hard coded some data so you can see what the frontend look
 
 **NOTE: You need to have nodejs and npm installed.**
 
-## Frontend
 Step 1: Clone the repository to desired location.
 
 ```bash
 git clone https://github.com/tuann72/clutter-free.git
 ```
 
-Step 2: Change directory into the frontend folder.
+## Frontend
+
+Step 1: Change directory into the frontend folder.
 ```bash
 cd frontend
 ```
 
-Step 3: Install frontend dependencies.
+Step 2: Install frontend dependencies.
 ```bash
 npm install
 ```
 
-Step 4: Run the frontend on developer mode. (While you are in the frontend directory...)
+Step 3: Run the frontend in developer mode. (While you are in the frontend directory...)
 ```bash
 npm run dev
 ```
 
 ## Backend
+Step 1: Change directory into the backend folder.
+```bash
+cd backend
+```
+
+Step 2: Install backend dependencies.
+```bash
+pip install -r requirements. txt
+```
+
+Step 3: Run the backend in developer mode. (While you are in the backend directory...)
+```bash
+python3 app.py
+```
