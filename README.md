@@ -32,6 +32,14 @@ All technologies' links can be found at the bottom of this section.
 - Handels natural language processing
 - This API handles queries for the GPT-4o model to process Tasks
 
+## Flask
+-  Lightweight WSGI web application framework for Python
+-  Used to create RESTful API for CRUD operations
+
+## SQlite
+- a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine
+- Used for storing tasks and tasks attributes
+
 ## Technology Links
 - NPM - https://www.npmjs.com/
 - Node - https://nodejs.org/en
@@ -39,6 +47,8 @@ All technologies' links can be found at the bottom of this section.
 - Shadcn - https://ui.shadcn.com/
 - Clerk - https://clerk.com/
 - OpenAI API - https://platform.openai.com/
+- Flask - https://flask.palletsprojects.com/en/stable/
+- SQlite - https://sqlite.org/
 
 # Development Setup
 
