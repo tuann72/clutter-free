@@ -73,7 +73,7 @@ export default function TaskView(){
 
     const userEmail = userInfo?.email;
 
-    // Fetches user's tasks from backend upon render
+    //Fetch tasks when the component mounts
     useEffect(() => {
       fetch("http://localhost:5000/users/" + userEmail + "/tasks")
         .then((res) => res.json())
@@ -84,7 +84,7 @@ export default function TaskView(){
           chartData[1].counts = 0;
           chartData[2].counts = 0;
     
-          // Update chart with fetched task data
+          //Update chart with fetched data
           data.forEach((task: Task) => {
             if (task.status.toLowerCase() === 'not-started') chartData[0].counts++;
             else if (task.status.toLowerCase() === 'in-progress') chartData[1].counts++;

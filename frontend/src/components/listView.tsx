@@ -101,7 +101,7 @@ export function ListView({ data }: ListViewProps) {
   const [currID, setCurrID] = useState(-1);
 
   // function to handle when user selects edit task
-  const handleTaskEdit = (task_id: number, name_param : string, esti_param: number, inten_parem: number, catego: string, stat: string) => {
+  const handleTaskEdit = async (task_id: number, name_param : string, esti_param: number, inten_parem: number, catego: string, stat: string) => {
     // updates varaibles accordingly
     setCurrID(task_id)
     setCurrTaskName(name_param)
@@ -112,11 +112,40 @@ export function ListView({ data }: ListViewProps) {
 
     // sets open to true to open dialog box
     setDialogOpen(true)
+
+    try {
+      const newUpdates = {
+        task: name_param,
+        estimate: esti_param,
+        intensity: inten_parem,
+        category: catego,
+        status: stat,
+      };
+  
+      const response = await fetch(`http://localhost:5000/tasks/${task_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUpdates),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+  
+      const result = await response.json();
+      console.log(result.message); // Task updated successfully!
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
   }
 
   // deletes single task based on id
   const deleteTask = (task_id : number) => {
     console.log("Attempting to delete task id: " + task_id)
+
+    // fetch request to delete task
     fetch("http://localhost:5000/tasks/" + task_id, {
       method: "DELETE",
     })
@@ -309,6 +338,7 @@ export function ListView({ data }: ListViewProps) {
 
     console.log(selectedID)
 
+    // fetch request to delete task
     selectedID.forEach((task_id) => {
       fetch("http://localhost:5000/tasks/" + task_id, {
         method: "DELETE",

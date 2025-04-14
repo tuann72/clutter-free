@@ -62,25 +62,26 @@ def remove_user(email):
     conn.close()
     return jsonify({"message": "User deleted successfully"})
 
+# creates tasks, tasks are then processed by the OpenAI API to get the intensity, category, estimate, and status.
 @app.route('/users/<email>/tasks', methods=['POST'])
 def create_tasks(email):
     try:
-        # 1. Get the list of tasks from the request body.
+        # get tasks from the request body.
         data = request.get_json()
         tasks_input = data.get('tasks')
         if not tasks_input:
             return jsonify({"error": "No task provided"}), 400
 
-        # 2. Prompt for the OpenAI API.
+        #Prompt for openai API.
         prompt = f"""
         Analyze, rate intensity, categorize, and estimate the time to complete each of the following tasks.
         Intensity should be from 1 to 5 (with 5 being the hardest). Categorize each task into one of: 'Work', 'Health', 'Home', 'Growth', or 'Social'.
-        Estimate the time to complete each task in minutes. Return the task name as "task" and include a default status "Not-Started" for each.
+        Estimate the time to complete each task in minutes. Return the task name as "task" and include a default status "not-started" for each.
         The response should be a JSON object with a "tasks" array. Each object in the array should have the following keys: "task", "category", "intensity", "estimate", and "status".
         Tasks: {json.dumps(tasks_input)}
         """
 
-        # 3. Call the OpenAI API to process the tasks.
+        # Call openai API to process the tasks.
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -93,7 +94,7 @@ def create_tasks(email):
             response_format={"type": "json_object"}
         )
 
-        # 4. Parse the API response.
+        #Parse the API response.
         result = json.loads(response.choices[0].message.content)
         processed_tasks = result.get('tasks')
         if not processed_tasks or not isinstance(processed_tasks, list):
@@ -105,7 +106,7 @@ def create_tasks(email):
             if not required_keys.issubset(task.keys()):
                 return jsonify({"error": "One or more processed tasks are missing required fields"}), 500
 
-        # 5. Insert the processed tasks into the database.
+        #Insert the processed tasks into the database.
         conn = get_db()
         cursor = conn.cursor()
         inserted_task_ids = []
@@ -125,7 +126,7 @@ def create_tasks(email):
         conn.commit()
         conn.close()
 
-        # 6. Return success message along with inserted task IDs.
+        #Return success message.
         return jsonify({
             "message": f"{len(inserted_task_ids)} tasks successfully created",
             "task_ids": inserted_task_ids
