@@ -119,7 +119,7 @@ export function ListView({ data }: ListViewProps) {
     console.log("Attempting to delete task id: " + task_id)
 
     // fetch request to delete task
-    fetch("http://localhost:5000/tasks/" + task_id, {
+    fetch("http://localhost:8000/tasks/" + task_id, {
       method: "DELETE",
     })
       .then((response) => {
@@ -313,7 +313,7 @@ export function ListView({ data }: ListViewProps) {
 
     // fetch request to delete task
     selectedID.forEach((task_id) => {
-      fetch("http://localhost:5000/tasks/" + task_id, {
+      fetch("http://localhost:8000/tasks/" + task_id, {
         method: "DELETE",
       })
         .then((response) => {

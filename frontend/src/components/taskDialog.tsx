@@ -79,7 +79,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
       };
       
       // Update the specific task with new values
-      const response = await fetch(`http://localhost:5000/tasks/${taskID}`, {
+      const response = await fetch(`http://localhost:8000/tasks/${taskID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

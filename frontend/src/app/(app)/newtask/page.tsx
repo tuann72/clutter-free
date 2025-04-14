@@ -31,7 +31,7 @@ export default function NewTask() {
     }
     // Gets user's email and creates API endpoint
     const userEmail = userInfo?.email;
-    const endpoint = `http://localhost:5000/users/${encodeURIComponent(userEmail)}/tasks`;
+    const endpoint = `http://localhost:8000/users/${encodeURIComponent(userEmail)}/tasks`;
 
     try {
       // Send tasks to backend for data persistence and NLP
