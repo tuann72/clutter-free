@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -313,34 +313,37 @@ export function ListView({ data }: ListViewProps) {
     },
   })
 
-  // deletes multiple selected task
-  const deleteSelected = () => {
-    const selectedRows = table.getFilteredSelectedRowModel().rows
-    const rowDetails = selectedRows.map((row) => row.original)
+  // deletes multiple selected tasks
+const deleteSelected = () => {
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const rowDetails = selectedRows.map((row) => row.original);
 
-    const selectedID = rowDetails.map ((task) => task.id)
+  const selectedID = rowDetails.map((task) => task.id);
+  console.log(selectedID);
 
-    console.log(selectedID)
-
-    // fetch request to delete task
-    selectedID.forEach((task_id) => {
-      fetch("http://localhost:8000/tasks/" + task_id, {
-        method: "DELETE",
+  // fetch request to delete each task
+  const deletePromises = selectedID.map((task_id) =>
+    fetch("http://localhost:8000/tasks/" + task_id, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Task deleted successfully");
+        } else {
+          console.error("Failed to delete task");
+        }
       })
-        .then((response) => {
-          if (response.ok) {
-            console.log("Task deleted successfully")
-          } else {
-            console.error("Failed to delete task")
-          }
-        })
-        .catch((error) => {
-          console.error("Error deleting task:", error)
-        })
-    });
-    // refresh the page to see changes
-    window.location.reload()
-  }
+      .catch((error) => {
+        console.error("Error deleting task for " + task_id + ", " + error);
+      })
+  );
+
+  // wait for all deletions before reloading
+  Promise.all(deletePromises).then(() => {
+    window.location.reload();
+  });
+};
+
 
   return (
     <div className="w-full">
