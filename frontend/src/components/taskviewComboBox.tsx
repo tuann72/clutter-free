@@ -27,10 +27,6 @@ const options = [
     value: "kanban",
     label: "Kanban",
   },
-  {
-    value: "mindmap",
-    label: "Mindmap",
-  },
 ]
 
 export function TaskViewComboBox({
