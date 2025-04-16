@@ -353,7 +353,7 @@ useEffect(() => {
   // resets hasConfirmed after deletion
   setHasConfirmed(false)
   
-}), [hasConfirmed];
+}), [hasConfirmed, table];
 
 // acquires all the selected task as strings to pass to dialog box for display
 const getTask = () => {
