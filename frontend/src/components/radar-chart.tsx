@@ -41,9 +41,10 @@ interface ChartDataList{
 export function RadarChartComponent({chartData} : ChartDataList) {
   return (
     <div className="text-center min-w-full">
+        Task Status Overview
         <ChartContainer
             config={chartConfig}
-            className="mx-auto max-h-[250px]"
+            className="mx-auto max-h-[512px]"
         >
           {/* create radar chart */}
             <RadarChart data={chartData}>

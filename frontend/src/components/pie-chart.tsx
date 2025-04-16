@@ -46,10 +46,11 @@ interface ChartDataList{
 export function PieChartComponent({chartData} : ChartDataList) {
   return (
       <div className="text-center min-w-full">
+        Task Status Overview
         {/* use chart configuration */}
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] px-0"
+          className="mx-auto aspect-square max-h-[512px] px-0"
         >
           <PieChart>
             {/* pie chart uses counts as the values */}

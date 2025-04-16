@@ -44,6 +44,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
   const [intensity, setIntensity] = useState(intense);
   const [category, setCategory] = useState(categ);
   const [status, setStatus] = useState(stat);
+  const [error, setError] = useState("")
 
   // when t_id,t_name,est,intense,categ,stat is changed, useEffect updates those values
   useEffect(() => {
@@ -57,6 +58,10 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
 
   // function to handle task edits
   const handleUpdates = async () => {
+    if(taskName == '' || estimate == 0){
+      setError("All updates require a task name and a time greater than 0 minutes.")
+      return;
+    }
     console.log(taskID)
     console.log(taskName)
     console.log(estimate)
@@ -92,7 +97,7 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
       }
   
       const result = await response.json();
-      console.log(result.message); // Task updated successfully!
+      console.log(result.message);
 
       // refresh the page to see the changes
       window.location.reload();
@@ -110,7 +115,8 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
           <DialogTitle>Edit Task</DialogTitle>
           {/* description */}
           <DialogDescription>
-            Make changes to your task. Click save changes when you are done.
+            Make changes to your task. Click save changes when you are done. <br/>
+            <p className="font-bold text-red-500">{error}</p>
           </DialogDescription>
           {/* add X to the top right to close the dialog */}
           <div onClick={() => setOpen(false)} className="absolute right-4 top-4 rounded-sm cursor-pointer">
@@ -127,7 +133,10 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               id="taskName"
               // default value is whatever the user had intitially
               defaultValue={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
+              onChange={(e) => {
+                setTaskName(e.target.value)
+                setError("")
+              }}
               className="col-span-3"
             />
           </div>
@@ -140,7 +149,10 @@ export function TaskDialog({t_id, showDialog, setOpen, t_name, est, intense, cat
               id="estimate"
               // default value is whatever the user had intitially 
               defaultValue={estimate}
-              onChange={(e) => setEstimate(Number(e.target.value))}
+              onChange={(e) => {
+                setEstimate(Number(e.target.value))
+                setError("")
+              }}
               className="col-span-3"
             />
           </div>

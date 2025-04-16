@@ -45,8 +45,9 @@ interface ChartDataList{
 export function BarChartComponent({chartData}: ChartDataList) {
   return (
     <div className="text-center min-w-full">
+      Task Status Overview
       {/* create chart using the chart config format */}
-      <ChartContainer config={chartConfig}>
+      <ChartContainer config={chartConfig} className="max-h-[512px]">
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />
           {/* x-axis configuration */}

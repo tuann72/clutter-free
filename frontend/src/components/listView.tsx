@@ -37,6 +37,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { TaskDialog } from "./taskDialog"
+import { ConfirmDelete } from "./confirmDelete"
 
 // const data: Task[] = [
 //   {
@@ -91,6 +92,8 @@ export function ListView({ data }: ListViewProps) {
 
   // edit task dialog appeareance tracking
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [confirmDeleteOpen, setConfDeleteOpen] = useState(false)
+  const [hasConfirmed, setHasConfirmed] = useState(false)
 
   // stores a specific task's variables
   const [currTaskName, setCurrTaskName] = useState("");
@@ -194,7 +197,7 @@ export function ListView({ data }: ListViewProps) {
           </Button>
         )
       },
-      cell: ({ row }) => <div>{row.getValue("task")}</div>,
+      cell: ({ row }) => <div className="capitalize">{row.getValue("task")}</div>,
     },
     // create estimate column
     {
@@ -265,7 +268,7 @@ export function ListView({ data }: ListViewProps) {
           </Button>
         )
       },
-      cell: ({ row }) => <div className="text-center lowercase">{row.getValue("category")}</div>,
+      cell: ({ row }) => <div className="text-center capitalize">{row.getValue("category")}</div>,
     },
     // create options column
     {
@@ -313,37 +316,53 @@ export function ListView({ data }: ListViewProps) {
     },
   })
 
-  // deletes multiple selected tasks
-const deleteSelected = () => {
+// deletes multiple selected tasks
+// we use a useffect to check when hasConfirmed updates
+useEffect(() => {
+  // we process tasks when hasConfirmed is true
+  // this conditional also prevents useEffect from looping itself
+  if(hasConfirmed == true){
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const rowDetails = selectedRows.map((row) => row.original);
+
+    const selectedID = rowDetails.map((task) => task.id);
+    console.log(selectedID);
+
+    // fetch request to delete each task
+    const deletePromises = selectedID.map((task_id) =>
+      fetch("http://localhost:8000/tasks/" + task_id, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Task deleted successfully");
+          } else {
+            console.error("Failed to delete task");
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting task for " + task_id + ", " + error);
+        })
+    );
+    // wait for all deletions before reloading
+    Promise.all(deletePromises).then(() => {
+      window.location.reload();
+    });
+  }
+  
+  // resets hasConfirmed after deletion
+  setHasConfirmed(false)
+  
+}), [hasConfirmed];
+
+// acquires all the selected task as strings to pass to dialog box for display
+const getTask = () => {
   const selectedRows = table.getFilteredSelectedRowModel().rows;
   const rowDetails = selectedRows.map((row) => row.original);
+  const selectedNames = rowDetails.map((task) => task.task);
 
-  const selectedID = rowDetails.map((task) => task.id);
-  console.log(selectedID);
-
-  // fetch request to delete each task
-  const deletePromises = selectedID.map((task_id) =>
-    fetch("http://localhost:8000/tasks/" + task_id, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Task deleted successfully");
-        } else {
-          console.error("Failed to delete task");
-        }
-      })
-      .catch((error) => {
-        console.error("Error deleting task for " + task_id + ", " + error);
-      })
-  );
-
-  // wait for all deletions before reloading
-  Promise.all(deletePromises).then(() => {
-    window.location.reload();
-  });
-};
-
+  return selectedNames
+}
 
   return (
     <div className="w-full">
@@ -449,7 +468,7 @@ const deleteSelected = () => {
           <Button
             variant="outline"
             size="sm"
-            onClick={deleteSelected}
+            onClick={() => setConfDeleteOpen(true)}
             disabled={table.getFilteredSelectedRowModel().rows.length == 0}
           >
             Delete Selected Items
@@ -475,7 +494,8 @@ const deleteSelected = () => {
         </div>
       </div>
 
-      {/* creates dialog box */}
+      {/* creates dialog boxes */}
+      <ConfirmDelete setOpen={setConfDeleteOpen} setConfirm={setHasConfirmed} showDialog={confirmDeleteOpen} tasks={getTask()}/>
       <TaskDialog t_id={currID} showDialog={dialogOpen} setOpen={setDialogOpen} t_name={currTaskName} est={currEstimate} intense={currIntensity} categ={currCategory} stat={currStatus}/>
 
     </div>

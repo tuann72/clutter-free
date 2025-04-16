@@ -107,6 +107,11 @@ export default function TaskView(){
                       {graph === "pie_chart" && <PieChartComponent chartData={chartData}/>}
                       {graph === "bar_chart" && <BarChartComponent chartData={chartData}/>}
                       {graph === "radar_chart" && <RadarChartComponent chartData={chartData}/>}
+                      {chartData[0].counts == 0 && chartData[1].counts == 0 && chartData[2].counts == 0 &&
+                        <div>
+                          No data found.
+                        </div>
+                      }
                     </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle/>
