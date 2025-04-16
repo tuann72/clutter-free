@@ -33,7 +33,7 @@ export function ConfirmDelete({setOpen, setConfirm, showDialog, tasks} : DeleteD
                 // for each task we create a label for it
                 tasks.map((item) => {
                     return (
-                        <Label key={item}>
+                        <Label className="capitalize" key={item}>
                             {item}
                         </Label>
                     );
