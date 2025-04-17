@@ -96,3 +96,12 @@ Step 3: Run the backend in developer mode. (While you are in the backend directo
 ```bash
 python3 app.py
 ```
+
+## Openai API setup
+Step 1: Obtain an API key from https://platform.openai.com/docs/overview
+
+
+Step 2: Create a .env file inside the backend folder, so it should be /backend/.env
+
+
+Step 3: Add OPENAI_API_KEY = [your api key] inside the .env file
