@@ -29,11 +29,12 @@ export default function Preferences() {
   const handleToggle = (value: boolean) => {
     setShortcutsEnabled(value);
     localStorage.setItem("shortcutsEnabled", value.toString());
+    window.location.reload()
   };
 
   const increaseFont = () => {
     setFontScale((prev) => {
-      const newScale = Math.min(prev + 0.1, 1.5);
+      const newScale = Math.min(prev + 0.1, 1.2);
       localStorage.setItem("fontScale", newScale.toString());
       document.documentElement.style.setProperty("--font-scale", newScale.toString());
       return newScale;
@@ -42,7 +43,7 @@ export default function Preferences() {
 
   const decreaseFont = () => {
     setFontScale((prev) => {
-      const newScale = Math.max(prev - 0.1, 0.5);
+      const newScale = Math.max(prev - 0.1, 0.8);
       localStorage.setItem("fontScale", newScale.toString());
       document.documentElement.style.setProperty("--font-scale", newScale.toString());
       return newScale;
@@ -90,10 +91,20 @@ export default function Preferences() {
     <div className="w-screen flex justify-center items-center">
       <div className="flex flex-col gap-3 w-[400px]">
         {/* New feature toggles for user preferences */}
-        <div className="flex gap-5 border-b border-gray-300 py-2 text-black-500 text-sm">
-          <span>Toggle Keyboard Shortcuts</span>
+        <div className="flex flex-col gap-5 border-b border-gray-300 py-2 text-black-500 text-sm">
+          <div className="flex gap-2">
+          <span>Toggle Keyboard Shortcuts to Navigate</span>
           <Switch checked={shortcutsEnabled} onCheckedChange={handleToggle} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <span>Press the corresponding keys to navigate to that page.</span>
+            <span>n : New Task</span>
+            <span>t : Task View</span>
+            <span>h : Help</span>
+            <span>p : Preferences</span>
+          </div>
         </div>
+        
 
         <div className="flex gap-5 border-b border-gray-300 py-2 text-sm items-center">
           <span>Font Size: {fontScale.toFixed(1)}x</span>
