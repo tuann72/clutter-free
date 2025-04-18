@@ -98,10 +98,10 @@ export default function Preferences() {
           </div>
           <div className="flex flex-col gap-1">
             <span>Press the corresponding keys to navigate to that page.</span>
-            <span>n : New Task</span>
-            <span>t : Task View</span>
-            <span>h : Help</span>
-            <span>p : Preferences</span>
+            <span>ctrl + n : New Task</span>
+            <span>ctrl + t : Task View</span>
+            <span>ctrl + h : Help</span>
+            <span>ctrl + p : Preferences</span>
           </div>
         </div>
         

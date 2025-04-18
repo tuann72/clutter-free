@@ -19,10 +19,23 @@ export default function KeyboardShortcutHandler() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
-      if (key === "n") router.push("/newtask");
-      else if (key === "t") router.push("/taskview");
-      else if (key === "h") router.push("/help");
-      else if (key === "p") router.push("/preferences");
+      // modified to switch case to ensure ctrl key has to be pressed
+      if (e.ctrlKey) {
+        switch (key) {
+          case "n":
+            router.push("/newtask");
+            break;
+          case "t":
+            router.push("/taskview");
+            break;
+          case "h":
+            router.push("/help");
+            break;
+          case "p":
+            router.push("/preferences");
+            break;
+        }
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
