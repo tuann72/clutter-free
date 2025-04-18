@@ -53,7 +53,7 @@ export default function Help(){
                         <AccordionTrigger>How can I delete multiple items in taskview?</AccordionTrigger>
                             <AccordionContent>
                                 <p>On taskview, select the check box button on the left of the tasks you want to delete.
-                                    Then select 'Delete Selected Items' and confirm.
+                                    Then select &apos;Delete Selected Items&apos; and confirm.
                                 </p>
                             </AccordionContent>
                     </AccordionItem>
