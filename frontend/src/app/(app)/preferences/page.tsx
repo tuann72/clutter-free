@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
-import { Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Preferences() {
   const [shortcutsEnabled, setShortcutsEnabled] = useState(false);
@@ -34,7 +33,7 @@ export default function Preferences() {
 
   const increaseFont = () => {
     setFontScale((prev) => {
-      const newScale = Math.min(prev + 0.1, 3.0);
+      const newScale = Math.min(prev + 0.1, 1.5);
       localStorage.setItem("fontScale", newScale.toString());
       document.documentElement.style.setProperty("--font-scale", newScale.toString());
       return newScale;
@@ -88,38 +87,25 @@ export default function Preferences() {
   }
 
   return (
-    <div className="w-screen flex justify-center items-center overflow-hidden">
-      <div className="flex flex-col gap-3">
+    <div className="w-screen flex justify-center items-center">
+      <div className="flex flex-col gap-3 w-[400px]">
         {/* New feature toggles for user preferences */}
         <div className="flex gap-5 border-b border-gray-300 py-2 text-black-500 text-sm">
           <span>Toggle Keyboard Shortcuts</span>
           <Switch checked={shortcutsEnabled} onCheckedChange={handleToggle} />
         </div>
 
-        <div className="flex gap-5 border-b border-gray-300 py-2 text-black-500 text-sm items-center">
+        <div className="flex gap-5 border-b border-gray-300 py-2 text-sm items-center">
           <span>Font Size: {fontScale.toFixed(1)}x</span>
-          <button className="px-3 py-1 bg-gray-200 rounded" onClick={decreaseFont}>
+          <Button className="px-3 py-1 w-7 h-7" onClick={decreaseFont}>
             -
-          </button>
-          <button className="px-3 py-1 bg-gray-200 rounded" onClick={increaseFont}>
+          </Button>
+          <Button className="px-3 py-1 w-7 h-7" onClick={increaseFont}>
             +
-          </button>
+          </Button>
         </div>
 
         <FontTypeDropdown />
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="flex gap-5 border-b border-gray-300 py-2 text-black-500 text-sm"
-          >
-            Accessibility Feature {i + 1}
-            <Switch />
-          </div>
-        ))}
-      </div>
-      
-      <div className="w-[400px] h-[500px] bg-gray-300 rounded-lg flex items-center justify-center text-lg text-black-700 ml-16">
-        Feature Preview
       </div>
     </div>
   );
