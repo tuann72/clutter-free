@@ -24,6 +24,7 @@ export default function Layout({children} : {children: React.ReactNode}){
     const userInfo = useUserInfo();
 
     return(
+        <div className="text-wrapper">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <KeyboardShortcutHandler />
         <FontScaleGlobal />
@@ -31,7 +32,6 @@ export default function Layout({children} : {children: React.ReactNode}){
         <SidebarProvider>
             <AppSidebar />                
         <SidebarTrigger />
-        
             <div className="flex flex-row absolute top-0 right-0 px-2 gap-2 py-2">
                 <Button variant='ghost' size='icon' onClick={toggleVisibility}>
                     {toggleTopRightOptions === false && <Eye/>}
@@ -55,13 +55,11 @@ export default function Layout({children} : {children: React.ReactNode}){
                                     </>
                                     ) : (
                                     <>
-                                        
-                                        <Sun className="w-5 h-5 text-gray-800 " />
+                                        <Sun className="w-5 h-5" />
                                     </>
                                     )}
                                 </Button>
-                        <div>
-                            
+                             <div>  
                         </div>
                     </div>
                 )}
@@ -70,5 +68,6 @@ export default function Layout({children} : {children: React.ReactNode}){
             {children}
         </SidebarProvider>
         </ThemeProvider>
+        </div>
     )
 }

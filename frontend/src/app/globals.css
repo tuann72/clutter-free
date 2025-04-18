@@ -103,8 +103,8 @@ body {
   --font-scale: 1;
 }
 
-body,
-body * {
+.text-wrapper,
+.text-wrapper * {
   font-size: calc(1rem * var(--font-scale)) !important;
   transition: font-size 0.2s ease;
 }

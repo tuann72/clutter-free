@@ -3,9 +3,11 @@ import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
 import { ClerkProvider } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 import { currentUser } from "@clerk/nextjs/server"
 import UserProvider from '@/components/UserProvider';
 import { ThemeProvider } from "@/components/theme-provider";
+import { useTheme } from 'next-themes';
 
 
 const robotoMono = Roboto_Mono({
@@ -32,13 +34,16 @@ export default async function RootLayout({
         email: user.emailAddresses[0]?.emailAddress ?? null,
       }
     : null;
+    
     return (
       <ClerkProvider>
        <html lang="en" suppressHydrationWarning>
       <body className={`antialiased ${typeof window !== 'undefined' ? localStorage.getItem("fontType") ?? "font-mono" : "font-mono"}`}>
+        <UserProvider userInfo={userInfo}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
           </ThemeProvider>
+        </UserProvider>
         </body>
       </html>
       </ClerkProvider>

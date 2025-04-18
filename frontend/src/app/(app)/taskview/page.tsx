@@ -46,8 +46,8 @@ const data: Task[] = [
 ]
 
 const chartData = [
-  { group: "not-started", counts: 0},
-  { group: "in-progress", counts: 0, fill: "hsl(62 0% 32%)" },
+  { group: "not-started", counts: 0, fill: "hsl(62 0% 32%)"},
+  { group: "in-progress", counts: 0, fill: "hsl(161 4% 48%)" },
   { group: "completed", counts: 0, fill: "hsl(192 19% 48%)" },
 ]
 
