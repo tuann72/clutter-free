@@ -6,6 +6,7 @@ import { useClerk } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 
 
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -93,26 +94,6 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              {/* Dark mode toggle button */}
-            <div className="mt-6 px-3">
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition"
-                aria-label="Toggle Dark Mode"
-              >
-                {theme === "dark" ? (
-                  <>
-                    <Sun className="w-5 h-5 text-yellow-400" />
-                    <span className="text-sm text-white">Light Mode</span>
-                  </>
-                ) : (
-                  <>
-                    <Moon className="w-5 h-5 text-gray-800" />
-                    <span className="text-sm text-black">Dark Mode</span>
-                  </>
-                )}
-              </button>
-            </div>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
