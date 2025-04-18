@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs'
 import { currentUser } from "@clerk/nextjs/server"
 import UserProvider from '@/components/UserProvider';
+import { ThemeProvider } from "@/components/theme-provider";
 
 
 const robotoMono = Roboto_Mono({
@@ -31,17 +32,15 @@ export default async function RootLayout({
         email: user.emailAddresses[0]?.emailAddress ?? null,
       }
     : null;
-  return (
-    <ClerkProvider>
-      <html lang="en">
-      <body
-        className={`${robotoMono.variable} antialiased`}
-      >
-        <UserProvider userInfo={userInfo}>
-          {children}
-        </UserProvider>
-      </body>
-    </html>
-    </ClerkProvider>
+    return (
+      <ClerkProvider>
+       <html lang="en" suppressHydrationWarning>
+      <body className={`antialiased ${typeof window !== 'undefined' ? localStorage.getItem("fontType") ?? "font-mono" : "font-mono"}`}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+      </ClerkProvider>
   );
 }
