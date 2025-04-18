@@ -65,9 +65,9 @@ export default function NewTask() {
   };
   
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-white-100">
-      <div className="w-full max-w-2xl bg-white p-10 rounded-lg shadow-md">
-        <h2 className="text-md font-medium mb-4 text-gray-700">
+    <div className="flex h-screen w-screen items-center justify-center">
+      <div className="w-full max-w-2xl p-10 rounded-lg shadow-md">
+        <h2 className="text-md font-medium mb-4">
           Enter your tasks to be organized. <br/>
           <p className='font-bold text-red-500'>{error}</p>
         </h2>

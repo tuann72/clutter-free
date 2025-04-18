@@ -1,9 +1,12 @@
 'use client';
 
-import { Inbox, ListTodo, Info, Settings2, LogOut } from "lucide-react";
+import { Inbox, ListTodo, Info, Settings2, LogOut, Moon, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
+import { useTheme } from "next-themes";
 
+
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -49,6 +52,7 @@ export function AppSidebar() {
   // signs user our
   const { signOut } = useClerk();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   // handles logout
   const handleLogout = async (e: React.MouseEvent) => {
