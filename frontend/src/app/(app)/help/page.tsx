@@ -34,6 +34,29 @@ export default function Help(){
                                 <p>Click there and select the preferences accustomed to your liking!</p>
                             </AccordionContent>
                     </AccordionItem>
+                    <AccordionItem value="item-4">
+                        <AccordionTrigger>How can I change to light/dark mode?</AccordionTrigger>
+                            <AccordionContent>
+                                <p>In the top right corner, there is a light/dark mode button.</p>
+                            </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-5">
+                        <AccordionTrigger>There is too much clutter! How can I reduce the number of components?</AccordionTrigger>
+                            <AccordionContent>
+                                <p>There are three ways to reduce clutter.</p> <br/>
+                                <p>1. In the top right corner you use the eye icon to collapse the top right option.</p>
+                                <p>2. In the top left corner, use the double arrow button to collapse the sidebar.</p>
+                                <p>3. The taskview section can be resized by select grabbing the small gray panels.</p>
+                            </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-6">
+                        <AccordionTrigger>How can I delete multiple items in taskview?</AccordionTrigger>
+                            <AccordionContent>
+                                <p>On taskview, select the check box button on the left of the tasks you want to delete.
+                                    Then select 'Delete Selected Items' and confirm.
+                                </p>
+                            </AccordionContent>
+                    </AccordionItem>
                 </Accordion>
         </div>
     )
