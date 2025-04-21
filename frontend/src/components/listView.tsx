@@ -464,6 +464,14 @@ const getTask = () => {
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
+          {/* Changes items that are selected to complete status*/} 
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={table.getFilteredSelectedRowModel().rows.length == 0}
+          >
+            Complete Seleted
+          </Button>
           {/* deletes items that are selected */}
           <Button
             variant="outline"
@@ -471,7 +479,7 @@ const getTask = () => {
             onClick={() => setConfDeleteOpen(true)}
             disabled={table.getFilteredSelectedRowModel().rows.length == 0}
           >
-            Delete Selected Items
+            Delete Selected
           </Button>
             {/* previous page */}
           <Button
