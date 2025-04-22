@@ -1,6 +1,9 @@
 # ClutterFree
 An application designed for productivty by eliminating visual and interactive distractions.
 
+# System Architecture
+![image](https://github.com/user-attachments/assets/d800cfcf-eb9e-4835-8bd0-af69d85d724d)
+
 # Technologies Used
 All technologies' links can be found at the bottom of this section.
 
