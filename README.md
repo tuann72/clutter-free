@@ -2,7 +2,7 @@
 An application designed for productivty by eliminating visual and interactive distractions.
 
 # System Architecture
-![image](https://github.com/user-attachments/assets/d800cfcf-eb9e-4835-8bd0-af69d85d724d)
+<img width="1335" alt="Screenshot 2025-04-22 at 11 35 19 PM" src="https://github.com/user-attachments/assets/dcd42a19-fbd0-438b-be8f-6daf6c915963" />
 
 # Technologies Used
 All technologies' links can be found at the bottom of this section.
