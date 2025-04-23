@@ -36,7 +36,13 @@ export default async function RootLayout({
     : null;
     
     return (
-      <ClerkProvider>
+      <ClerkProvider
+      // appearance={{
+      //   layout: {
+      //     unsafe_disableDevelopmentModeWarnings: true,
+      //   },
+      // }}
+      >
        <html lang="en" suppressHydrationWarning>
       <body className={`antialiased ${typeof window !== 'undefined' ? localStorage.getItem("fontType") ?? "font-mono" : "font-mono"}`}>
         <UserProvider userInfo={userInfo}>
