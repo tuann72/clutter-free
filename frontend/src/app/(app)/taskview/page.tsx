@@ -70,24 +70,40 @@ export default function TaskView(){
     const userEmail = userInfo?.email;
 
     //Fetch tasks when the component mounts
-    useEffect(() => {
-      fetch("http://localhost:8000/users/" + userEmail + "/tasks")
-        .then((res) => res.json())
-        .then((data) => {
-          setData(data);
+    // useEffect(() => {
+    //   fetch("http://localhost:8000/users/" + userEmail + "/tasks")
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //       setData(data);
 
-          chartData[0].counts = 0;
-          chartData[1].counts = 0;
-          chartData[2].counts = 0;
+    //       chartData[0].counts = 0;
+    //       chartData[1].counts = 0;
+    //       chartData[2].counts = 0;
     
-          //Update chart with fetched data
-          data.forEach((task: Task) => {
-            if (task.status.toLowerCase() === 'not-started') chartData[0].counts++;
-            else if (task.status.toLowerCase() === 'in-progress') chartData[1].counts++;
-            else if (task.status.toLowerCase() === 'completed') chartData[2].counts++;
-          });
-        })
-        .catch((err) => console.error("Failed to fetch tasks:", err));
+    //       //Update chart with fetched data
+    //       data.forEach((task: Task) => {
+    //         if (task.status.toLowerCase() === 'not-started') chartData[0].counts++;
+    //         else if (task.status.toLowerCase() === 'in-progress') chartData[1].counts++;
+    //         else if (task.status.toLowerCase() === 'completed') chartData[2].counts++;
+    //       });
+    //     })
+    //     .catch((err) => console.error("Failed to fetch tasks:", err));
+    // }, []);
+
+    //Fetch some data for the chart
+    useEffect(() => {
+      const grabData = async () => {
+        // Set the data state with the hardcoded data for demo proposes
+        // In the real application, you would fetch this data from an API or database
+        setData([
+          { id: 1, category: "Work", estimate: 2, intensity: 3, status: "in-progress", task: "Finish Business Report" },
+          { id: 2, category: "Health", estimate: 1, intensity: 2, status: "in-progress", task: "Do 30 minutes of cardio" },
+          { id: 3, category: "Home", estimate: 4, intensity: 5, status: "completed", task: "Clean up the bathroom" },
+          { id: 4, category: "Growth", estimate: 3, intensity: 4, status: "not-started", task: "Read a book" },
+          { id: 5, category: "Social", estimate: 2, intensity: 3, status: "in-progress", task: "Call Mom" },
+        ]);
+      };
+      grabData();
     }, []);
     
 
