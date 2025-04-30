@@ -95,6 +95,9 @@ export default function TaskView(){
       const grabData = async () => {
         // Set the data state with the hardcoded data for demo proposes
         // In the real application, you would fetch this data from an API or database
+        chartData[0].counts = 1;
+        chartData[1].counts = 3;
+        chartData[2].counts = 1;
         setData([
           { id: 1, category: "Work", estimate: 2, intensity: 3, status: "in-progress", task: "Finish Business Report" },
           { id: 2, category: "Health", estimate: 1, intensity: 2, status: "in-progress", task: "Do 30 minutes of cardio" },
